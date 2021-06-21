@@ -12,7 +12,9 @@ target 'ChatBarExample' do
   #
   # Note that if you have use_frameworks! enabled, Flipper will not work and
   # you should disable these next few lines.
-  use_flipper!({ 'Flipper' => '0.80.0' })
+#  use_flipper!({ 'Flipper' => '0.80.0' })
+  pod 'react-native-cameraroll', :path => '../node_modules/@react-native-community/cameraroll'
+
   post_install do |installer|
     flipper_post_install(installer)
   end

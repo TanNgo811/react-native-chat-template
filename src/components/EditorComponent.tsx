@@ -12,7 +12,7 @@ import ArrowForward from './Icons/ArrowForward';
 const EditorComponent: FC<PropsWithChildren<EditorComponentProps>> = (
   props: PropsWithChildren<EditorComponentProps>
 ): ReactElement => {
-  const { onPhotoIconPress, onSend, ...restProps } = props;
+  const { primaryColor, onPhotoIconPress, onSend, ...restProps } = props;
 
   return (
     <View style={styles.containerView}>
@@ -20,11 +20,11 @@ const EditorComponent: FC<PropsWithChildren<EditorComponentProps>> = (
         <View style={styles.inputContent}>
           <TextInput {...restProps} style={styles.textInput} />
           <TouchableOpacity activeOpacity={1} onPress={onPhotoIconPress}>
-            <PhotoSquareOutline />
+            <PhotoSquareOutline color={primaryColor} />
           </TouchableOpacity>
         </View>
         <TouchableOpacity activeOpacity={1} onPress={onSend}>
-          <ArrowForward />
+          <ArrowForward color={primaryColor} />
         </TouchableOpacity>
       </View>
     </View>
@@ -39,12 +39,13 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     height: 56,
     bottom: 0,
-    paddingTop: 4,
+    paddingVertical: 20,
   },
   inputView: {
     flexDirection: 'row',
     borderRadius: 25,
     flex: 1,
+    alignItems: 'center',
   },
   inputContent: {
     paddingHorizontal: 16,
@@ -65,6 +66,8 @@ const styles = StyleSheet.create({
 
 export interface EditorComponentProps extends TextInputProps {
   //
+  primaryColor?: string;
+
   onPhotoIconPress?: () => void;
 
   onSend?: () => void;

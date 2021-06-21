@@ -1,10 +1,19 @@
-import React from 'react';
-import { Keyboard, KeyboardAvoidingView, Platform } from 'react-native';
+import React, { FC, PropsWithChildren, ReactElement } from 'react';
+import {
+  Keyboard,
+  KeyboardAvoidingView,
+  Platform,
+  TextInputProps,
+} from 'react-native';
 import EditorComponent from './components/EditorComponent';
 import AnimatedImagePicker from './components/AnimatedImagePicker';
 import type { ImagePickerResponse } from './components/ImageType';
 
-function ChatBar() {
+const ChatBar: FC<PropsWithChildren<ChatBarProps>> = (
+  props: PropsWithChildren<ChatBarProps>
+): ReactElement => {
+  const { primaryColor, ...restProps } = props;
+
   const [isVisible, setVisible] = React.useState<boolean>(false);
 
   const [imageDir, setImageDir] = React.useState<string>();
@@ -34,11 +43,13 @@ function ChatBar() {
         <EditorComponent
           onFocus={handleCloseModal}
           onChangeText={() => {}}
-          placeholder={'abc'}
           onPhotoIconPress={handlePressPhotoIcon}
           onSend={() => {}}
+          primaryColor={primaryColor}
+          {...restProps}
         />
         <AnimatedImagePicker
+          primaryColor={primaryColor}
           isVisible={isVisible}
           onCancel={handleCloseModal}
           endingPickImageHandle={handleChooseImage}
@@ -47,6 +58,19 @@ function ChatBar() {
       </KeyboardAvoidingView>
     </>
   );
+};
+
+export interface ChatBarProps extends TextInputProps {
+  //
+  primaryColor?: string;
 }
+
+ChatBar.defaultProps = {
+  //
+};
+
+ChatBar.propTypes = {
+  //
+};
 
 export default ChatBar;

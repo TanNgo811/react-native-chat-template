@@ -3,19 +3,13 @@ import { StyleSheet, View, Text, SafeAreaView } from 'react-native';
 import ChatBar from 'react-native-chat-bar';
 
 export default function App() {
-  // const [result, setResult] = React.useState<number | undefined>();
-  //
-  // React.useEffect(() => {
-  //   ChatBar.multiply(3, 7).then(setResult);
-  // }, []);
-
   return (
     <>
       <SafeAreaView style={styles.zeroFlex} />
       <View style={styles.container}>
-        <Text>ABC</Text>
+        <Text>CHAT BAR UI</Text>
       </View>
-      <ChatBar />
+      <ChatBar primaryColor={'blue'} placeholder={'Lets talk!'} />
       <SafeAreaView style={styles.zeroFlex} />
     </>
   );

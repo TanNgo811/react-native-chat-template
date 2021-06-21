@@ -10,7 +10,13 @@ import { Dimensions, StyleSheet, Text, TouchableOpacity } from 'react-native';
 const SendImageButton: FC<PropsWithChildren<SendImageButtonProps>> = (
   props: PropsWithChildren<SendImageButtonProps>
 ): ReactElement => {
-  const { onPress, numberSelectedItem, buttonBottom } = props;
+  const {
+    onPress,
+    numberSelectedItem,
+    buttonBottom,
+    primaryColor,
+    textSendImage,
+  } = props;
 
   const { width } = Dimensions.get('window');
 
@@ -24,12 +30,16 @@ const SendImageButton: FC<PropsWithChildren<SendImageButtonProps>> = (
           width: (width * 80) / 100,
           left: (width * 10) / 100,
           bottom: buttonBottom ? buttonBottom : 10,
+          backgroundColor: primaryColor ? primaryColor : '#BC2C3D',
         },
       ]}
     >
       <Text style={[styles.text]}>
-        {`Send`.toUpperCase() +
-          ` ${numberSelectedItem > 1 ? numberSelectedItem : ''}`}
+        {textSendImage
+          ? textSendImage.toUpperCase() +
+            ` ${numberSelectedItem > 1 ? numberSelectedItem : ''}`
+          : `Send Images`.toUpperCase() +
+            ` ${numberSelectedItem > 1 ? numberSelectedItem : ''}`}
       </Text>
     </TouchableOpacity>
   );
@@ -38,7 +48,7 @@ const SendImageButton: FC<PropsWithChildren<SendImageButtonProps>> = (
 const styles = StyleSheet.create({
   sentButton: {
     position: 'absolute',
-    backgroundColor: 'red',
+
     borderRadius: 20,
     margin: 'auto',
     alignItems: 'center',
@@ -54,6 +64,10 @@ const styles = StyleSheet.create({
 
 export interface SendImageButtonProps {
   //
+  textSendImage?: string;
+
+  primaryColor?: string;
+
   onPress?: () => void;
 
   numberSelectedItem: number;

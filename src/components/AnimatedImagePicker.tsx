@@ -45,6 +45,9 @@ const AnimatedImagePicker: FC<PropsWithChildren<AnimatedImagePickerProps>> = (
     overLimitedImageNumberHandle,
     endingPickImageHandle,
     setVisible,
+    primaryColor,
+    textSendImage,
+    headerImagePicker,
   } = props;
 
   const [images, setImages] = React.useState<ImagePickerResponse[]>([]);
@@ -115,7 +118,6 @@ const AnimatedImagePicker: FC<PropsWithChildren<AnimatedImagePickerProps>> = (
       );
 
       if (androidGranted === PermissionsAndroid.RESULTS.GRANTED) {
-        showWarning('You can access the folder');
       } else {
         showWarning('Folder permission denied');
       }
@@ -275,11 +277,12 @@ const AnimatedImagePicker: FC<PropsWithChildren<AnimatedImagePickerProps>> = (
               ? selectItemsObject[item.uri].order
               : null
           }
+          primaryColor={primaryColor}
         />
         // <></>
       );
     },
-    [onSelectHandle, selectItemsObject]
+    [onSelectHandle, primaryColor, selectItemsObject]
   );
 
   const handlePressSendImage = React.useCallback(() => {
@@ -336,12 +339,14 @@ const AnimatedImagePicker: FC<PropsWithChildren<AnimatedImagePickerProps>> = (
                   style={styles.hideIcon}
                 >
                   <View>
-                    <CloseIcon />
+                    <CloseIcon color={primaryColor} />
                   </View>
                 </TouchableOpacity>
 
                 <View style={styles.textContainer}>
-                  <Text style={[styles.textHeader]}>Photo</Text>
+                  <Text style={[styles.textHeader]}>
+                    {headerImagePicker ? headerImagePicker : 'Images'}
+                  </Text>
                 </View>
               </Animated.View>
             </Animated.View>
@@ -361,6 +366,8 @@ const AnimatedImagePicker: FC<PropsWithChildren<AnimatedImagePickerProps>> = (
             <Animated.View style={{ bottom: bottomButton }}>
               {numberSelectedItem > 0 && (
                 <SendImageButton
+                  primaryColor={primaryColor}
+                  textSendImage={textSendImage}
                   onPress={handlePressSendImage}
                   numberSelectedItem={numberSelectedItem}
                   buttonBottom={0}
@@ -379,7 +386,6 @@ const styles = StyleSheet.create({
     margin: 0,
     padding: 0,
     width: '100%',
-
     backgroundColor: '#FFFFFF',
   },
   headerContainer: {
@@ -398,8 +404,9 @@ const styles = StyleSheet.create({
   },
   hideIcon: {
     position: 'absolute',
-    left: 10,
+    left: 0,
     zIndex: 10,
+    padding: 15,
   },
   textContainer: {
     alignItems: 'center',
@@ -413,6 +420,12 @@ const styles = StyleSheet.create({
 
 export interface AnimatedImagePickerProps {
   //
+  headerImagePicker?: string;
+
+  textSendImage?: string;
+
+  primaryColor?: string;
+
   isVisible?: boolean;
 
   onCancel: () => void;

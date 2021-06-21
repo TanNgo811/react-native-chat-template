@@ -18,7 +18,7 @@ import type { ImagePickerResponse } from './ImageType';
 const ImageItem: FC<PropsWithChildren<ImageItemProps>> = (
   props: PropsWithChildren<ImageItemProps>
 ): ReactElement => {
-  const { image, onSelect, selected, order } = props;
+  const { image, onSelect, selected, order, primaryColor } = props;
 
   const { width } = Dimensions.get('window');
 
@@ -30,7 +30,14 @@ const ImageItem: FC<PropsWithChildren<ImageItemProps>> = (
       />
       {selected && (
         <View style={styles.overLay}>
-          <View style={styles.numberIndicator}>
+          <View
+            style={[
+              styles.numberIndicator,
+              {
+                backgroundColor: primaryColor ? primaryColor : '#BC2C3D',
+              },
+            ]}
+          >
             <Text style={[styles.text]}>{order}</Text>
           </View>
         </View>
@@ -54,13 +61,12 @@ const styles = StyleSheet.create({
     height: 32,
     width: 32,
     borderRadius: 16,
-    backgroundColor: 'red',
     alignItems: 'center',
     justifyContent: 'center',
     opacity: 1,
   },
   text: {
-    fontSize: 12,
+    fontSize: 14,
     color: 'white',
     fontWeight: 'bold',
   },
@@ -68,9 +74,14 @@ const styles = StyleSheet.create({
 
 export interface ImageItemProps {
   //
+  primaryColor?: string;
+
   image: ImagePickerResponse;
+
   onSelect: (image: ImagePickerResponse) => void;
+
   selected: boolean;
+
   order: null | number;
 }
 

@@ -1,76 +1,9 @@
-import React, { FC, PropsWithChildren, ReactElement } from 'react';
-import {
-  Keyboard,
-  KeyboardAvoidingView,
-  Platform,
-  TextInputProps,
-} from 'react-native';
-import EditorComponent from './components/EditorComponent';
-import AnimatedImagePicker from './components/AnimatedImagePicker';
-import type { ImagePickerResponse } from './components/ImageType';
+export { default as ChatBar } from './components/organisms/ChatBar/CharBar';
 
-const ChatBar: FC<PropsWithChildren<ChatBarProps>> = (
-  props: PropsWithChildren<ChatBarProps>
-): ReactElement => {
-  const { primaryColor, ...restProps } = props;
+export { default as ChatDefaultLayout } from './components/templates/ChatDefaultLayout/ChatDefaultLayout';
 
-  const [isVisible, setVisible] = React.useState<boolean>(false);
+export { default as SearchBar } from './components/morecules/SearchBar/SearchBar';
 
-  const [imageDir, setImageDir] = React.useState<string>();
+export { default as ConversationItem } from './components/morecules/ConversationItem/ConversationItem';
 
-  const handleChooseImage = React.useCallback(
-    async (images: ImagePickerResponse[]) => {
-      await setImageDir(images[0].uri);
-      console.log(imageDir);
-    },
-    [imageDir]
-  );
-
-  const handleCloseModal = React.useCallback(() => {
-    setVisible(false);
-  }, []);
-
-  const handlePressPhotoIcon = React.useCallback(() => {
-    setVisible(!isVisible);
-    Keyboard.dismiss();
-  }, [isVisible]);
-
-  return (
-    <>
-      <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-      >
-        <EditorComponent
-          onFocus={handleCloseModal}
-          onChangeText={() => {}}
-          onPhotoIconPress={handlePressPhotoIcon}
-          onSend={() => {}}
-          primaryColor={primaryColor}
-          {...restProps}
-        />
-        <AnimatedImagePicker
-          primaryColor={primaryColor}
-          isVisible={isVisible}
-          onCancel={handleCloseModal}
-          endingPickImageHandle={handleChooseImage}
-          setVisible={setVisible}
-        />
-      </KeyboardAvoidingView>
-    </>
-  );
-};
-
-export interface ChatBarProps extends TextInputProps {
-  //
-  primaryColor?: string;
-}
-
-ChatBar.defaultProps = {
-  //
-};
-
-ChatBar.propTypes = {
-  //
-};
-
-export default ChatBar;
+export { default as ConversationDetail } from './components/organisms/ConversationDetail/ConversationDetail';

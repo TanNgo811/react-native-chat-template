@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   StyleSheet,
 } from 'react-native';
-import type { ImagePickerResponse } from './ImageType';
+import type { ImagePickerResponse } from '../../../types/ImageType';
 
 /**
  * File: ImageItem.tsx

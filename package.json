@@ -82,7 +82,7 @@
   "husky": {
     "hooks": {
       "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
-      "pre-commit": "yarn lint && yarn typescript"
+      "pre-commit": "yarn lint && yarn typescript "
     }
   },
   "commitlint": {
@@ -153,8 +153,14 @@
   },
   "dependencies": {
     "@react-native-community/cameraroll": "^4.0.4",
+    "@react-navigation/native": "^5.9.4",
+    "@react-navigation/stack": "^5.14.5",
+    "add": "^2.0.6",
+    "react-native-autoscroll-flatlist": "^1.10.2",
+    "react-native-gesture-handler": "^1.10.3",
     "react-native-svg": "^12.1.1",
     "react-native-toasty": "^1.0.2",
-    "react-use": "^17.2.4"
+    "react-use": "^17.2.4",
+    "yarn": "^1.22.10"
   }
 }

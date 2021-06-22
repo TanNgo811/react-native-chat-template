@@ -15,6 +15,10 @@ target 'ChatBarExample' do
 #  use_flipper!({ 'Flipper' => '0.80.0' })
   pod 'react-native-cameraroll', :path => '../node_modules/@react-native-community/cameraroll'
 
+  pod 'react-native-safe-area-context', :path => '../node_modules/react-native-safe-area-context'
+
+
+
   post_install do |installer|
     flipper_post_install(installer)
   end

@@ -1,33 +1,23 @@
+import type { RefObject } from 'react';
 import * as React from 'react';
-import { StyleSheet, View, Text, SafeAreaView } from 'react-native';
-import ChatBar from 'react-native-chat-bar';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import {
+  NavigationContainer,
+  NavigationContainerRef,
+} from '@react-navigation/native';
+import RootNavigator from './navigators/RootNavigator';
+import { StatusBar } from 'react-native';
 
 export default function App() {
+  const navigationContainerRef: RefObject<NavigationContainerRef> =
+    React.createRef<NavigationContainerRef>();
+
   return (
-    <>
-      <SafeAreaView style={styles.zeroFlex} />
-      <View style={styles.container}>
-        <Text>CHAT BAR UI</Text>
-      </View>
-      <ChatBar primaryColor={'blue'} placeholder={'Lets talk!'} />
-      <SafeAreaView style={styles.zeroFlex} />
-    </>
+    <SafeAreaProvider>
+      <StatusBar barStyle={'light-content'} />
+      <NavigationContainer ref={navigationContainerRef}>
+        <RootNavigator />
+      </NavigationContainer>
+    </SafeAreaProvider>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    width: '100%',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  box: {
-    width: 60,
-    height: 60,
-    marginVertical: 20,
-  },
-  zeroFlex: {
-    flex: 0,
-  },
-});

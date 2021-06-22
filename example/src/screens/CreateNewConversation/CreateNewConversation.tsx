@@ -2,13 +2,23 @@ import React, { FC, PropsWithChildren, ReactElement } from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import type { StackScreenProps } from '@react-navigation/stack';
 import { ChatDefaultLayout, SearchBar } from 'react-native-chat-bar';
+import RightArrow from '../../asserts/RightArrow';
+import GroupIcon from '../../asserts/GroupIcon';
 
 const CreateNewConversation: FC<PropsWithChildren<CreateNewConversationProps>> =
   (props: PropsWithChildren<CreateNewConversationProps>): ReactElement => {
     const { navigation, route } = props;
 
-    const handleGoBack = React.useCallback(() => {
-      navigation.goBack();
+    const handleGoToChatList = React.useCallback(() => {
+      navigation.navigate('ChatList');
+    }, [navigation]);
+
+    const handleGoToChatDetail = React.useCallback(() => {
+      navigation.navigate('ChatDetail');
+    }, [navigation]);
+
+    const handleGoToCreateGroupConversation = React.useCallback(() => {
+      navigation.navigate('CreateNewGroupConversation');
     }, [navigation]);
 
     return (
@@ -19,7 +29,7 @@ const CreateNewConversation: FC<PropsWithChildren<CreateNewConversationProps>> =
         left={<View />}
         rightType={'other'}
         right={
-          <TouchableOpacity activeOpacity={1} onPress={handleGoBack}>
+          <TouchableOpacity activeOpacity={1} onPress={handleGoToChatList}>
             <Text
               style={{
                 color: '#BC2C3D',
@@ -34,18 +44,81 @@ const CreateNewConversation: FC<PropsWithChildren<CreateNewConversationProps>> =
       >
         <SearchBar isRoundedBorder={false} />
         <View style={styles.container}>
-          <View>
-            <View>
+          <TouchableOpacity
+            activeOpacity={1}
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              marginVertical: 16,
+            }}
+            onPress={handleGoToCreateGroupConversation}
+          >
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+              }}
+            >
+              <GroupIcon />
+              <Text style={{ marginLeft: 12 }}>Create New Group</Text>
+            </View>
+            <RightArrow />
+          </TouchableOpacity>
+
+          <Text style={{ marginVertical: 8 }}>Suggestion</Text>
+
+          <TouchableOpacity
+            activeOpacity={1}
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              marginVertical: 4,
+            }}
+            onPress={handleGoToChatDetail}
+          >
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+              }}
+            >
               <Image
                 source={{
                   uri: 'https://png.pngtree.com/svg/20161027/service_default_avatar_182956.png',
                 }}
                 style={styles.image}
               />
-              <Text>abc </Text>
+              <Text style={{ marginLeft: 12 }}>User 1</Text>
             </View>
-          </View>
-          <Text>Suggestion</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            activeOpacity={1}
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              marginVertical: 4,
+            }}
+            onPress={handleGoToChatDetail}
+          >
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+              }}
+            >
+              <Image
+                source={{
+                  uri: 'https://png.pngtree.com/svg/20161027/service_default_avatar_182956.png',
+                }}
+                style={styles.image}
+              />
+              <Text style={{ marginLeft: 12 }}>User 2</Text>
+            </View>
+          </TouchableOpacity>
         </View>
       </ChatDefaultLayout>
     );

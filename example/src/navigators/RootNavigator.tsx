@@ -3,6 +3,8 @@ import { createStackNavigator } from '@react-navigation/stack';
 import ChatList from '../screens/ChatList/ChatList';
 import ChatDetail from '../screens/ChatDetail/ChatDetail';
 import CreateNewConversation from '../screens/CreateNewConversation/CreateNewConversation';
+import CreateNewGroupConversation from '../screens/CreateNewGroupConversation/CreateNewGroupConversation';
+import GroupChatDetail from '../screens/GroupChatDetail/GroupChatDetail';
 
 const { Navigator, Screen } = createStackNavigator();
 
@@ -24,6 +26,18 @@ const RootNavigator: FC<PropsWithChildren<RootNavigatorProps>> =
         <Screen
           name={'CreateNewConversation'}
           component={CreateNewConversation}
+          initialParams={{}}
+        />
+
+        <Screen
+          name={'CreateNewGroupConversation'}
+          component={CreateNewGroupConversation}
+          initialParams={{}}
+        />
+
+        <Screen
+          name={'GroupChatDetail'}
+          component={GroupChatDetail}
           initialParams={{}}
         />
       </Navigator>

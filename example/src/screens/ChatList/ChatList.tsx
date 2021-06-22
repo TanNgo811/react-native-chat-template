@@ -33,6 +33,11 @@ const ChatList: FC<PropsWithChildren<ChatListProps>> = (
           <TouchableOpacity
             activeOpacity={1}
             onPress={handleGoToCreateNewConversation}
+            style={{
+              alignItems: 'center',
+              justifyContent: 'center',
+              paddingTop: 5,
+            }}
           >
             <PlusIcon />
           </TouchableOpacity>

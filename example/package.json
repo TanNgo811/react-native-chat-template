@@ -22,7 +22,8 @@
     "react-native-safe-area-context": "^3.2.0",
     "react-native-screens": "^3.4.0",
     "react-native-toasty": "^1.0.2",
-    "react-use": "^17.2.4"
+    "react-use": "^17.2.4",
+    "reanimated-bottom-sheet": "^1.0.0-alpha.22"
   },
   "devDependencies": {
     "@babel/core": "^7.12.10",

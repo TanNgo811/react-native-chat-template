@@ -1,17 +1,17 @@
 import React, { FC, PropsWithChildren, ReactElement } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, TouchableOpacity, View, Text, Image } from 'react-native';
 import type { StackScreenProps } from '@react-navigation/stack';
-import {
-  ChatBar,
-  ChatDefaultLayout,
-  ConversationDetail,
-} from 'react-native-chat-bar';
-import ListAnswer from '../../sample/ListAnswer.json';
+import { ChatBar, ChatDefaultLayout } from 'react-native-chat-bar';
+import InformationIcon from '../../asserts/InformationIcon';
 
 const GroupChatDetail: FC<PropsWithChildren<GroupChatDetailProps>> = (
   props: PropsWithChildren<GroupChatDetailProps>
 ): ReactElement => {
   const { navigation, route } = props;
+
+  const handleGoToGroupChatSetting = React.useCallback(() => {
+    navigation.navigate('GroupChatSetting');
+  }, [navigation]);
 
   return (
     <ChatDefaultLayout
@@ -19,11 +19,66 @@ const GroupChatDetail: FC<PropsWithChildren<GroupChatDetailProps>> = (
       navigation={navigation}
       title={'Group Chat'}
       left={'back-button'}
-      right={<View />}
       rightType={'icon'}
+      right={
+        <TouchableOpacity
+          activeOpacity={1}
+          onPress={handleGoToGroupChatSetting}
+          style={{
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          <InformationIcon />
+        </TouchableOpacity>
+      }
     >
       <View style={styles.container}>
-        <ConversationDetail listAnswer={ListAnswer} />
+        <View
+          style={{
+            alignItems: 'center',
+          }}
+        >
+          <View
+            style={{
+              alignItems: 'center',
+              justifyContent: 'center',
+              marginTop: 20,
+            }}
+          >
+            <Image
+              source={{
+                uri: 'https://png.pngtree.com/svg/20161027/service_default_avatar_182956.png',
+              }}
+              style={[
+                styles.image,
+                {
+                  position: 'absolute',
+                  top: 30,
+                  right: -50,
+                },
+              ]}
+            />
+            <Image
+              source={{
+                uri: 'https://png.pngtree.com/svg/20161027/service_default_avatar_182956.png',
+              }}
+              style={[
+                styles.image,
+                {
+                  position: 'absolute',
+                  top: 0,
+                  right: -10,
+                },
+              ]}
+            />
+          </View>
+
+          <View style={{ alignItems: 'center', marginTop: 100 }}>
+            <Text style={styles.title}>Best Sellers Ever</Text>
+            <Text style={styles.subtitle}>User 1, User 2</Text>
+          </View>
+        </View>
       </View>
       <ChatBar
         setPickedImages={() => {}}
@@ -38,14 +93,25 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: 16,
+    alignItems: 'center',
   },
-  box: {
-    width: 60,
-    height: 60,
-    marginVertical: 20,
+
+  image: {
+    height: 64,
+    width: 64,
   },
-  zeroFlex: {
-    flex: 0,
+
+  title: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    letterSpacing: 0.5,
+    lineHeight: 27,
+    color: '#848484',
+  },
+
+  subtitle: {
+    fontSize: 12,
+    color: '#848484',
   },
 });
 

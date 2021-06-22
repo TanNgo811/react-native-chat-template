@@ -21,13 +21,13 @@ const CreateNewGroupConversation: FC<
     navigation.navigate('GroupChatDetail');
   }, [navigation]);
 
-  const { isChecked, setCheck } = React.useState(false);
+  const [isChecked, setCheck] = React.useState(false);
 
   const handleToggleCheck = React.useCallback(() => {
     setCheck(!isChecked);
   }, [isChecked, setCheck]);
 
-  const { isChecked2, setChecked2 } = React.useState(false);
+  const [isChecked2, setChecked2] = React.useState(false);
 
   const handleToggleCheck2 = React.useCallback(() => {
     setChecked2(!isChecked2);

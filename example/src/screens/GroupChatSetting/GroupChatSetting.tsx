@@ -15,67 +15,149 @@ import OutGroupIcon from '../../asserts/OutGroupIcon';
 import BlockIcon from '../../asserts/BlockIcon';
 import FileIcon from '../../asserts/FileIcon';
 import PictureIcon from '../../asserts/PictureIcon';
+import Modal from 'react-native-modal';
 
 const GroupChatSetting: FC<PropsWithChildren<GroupChatSettingProps>> = (
   props: PropsWithChildren<GroupChatSettingProps>
 ): ReactElement => {
   const { navigation, route } = props;
 
-  const renderContent = () => (
-    <SafeAreaView style={styles.bottomBoxContainer}>
-      <View style={styles.backgroundChoice}>
-        <View style={styles.textContainer}>
-          <Text
-            style={[
-              styles.textChoice,
-              {
-                color: '#5C61F4',
-              },
-            ]}
-          >
-            Change Group Image Profile
-          </Text>
-        </View>
-        <View style={styles.textContainer}>
-          <Text
-            style={[
-              styles.textChoice,
-              {
-                color: '#5C61F4',
-              },
-            ]}
-          >
-            Change Group Name
-          </Text>
-        </View>
-      </View>
-      <View
-        style={[
-          styles.backgroundChoice,
-          styles.textContainer,
-          {
-            marginTop: 8,
-          },
-        ]}
-      >
-        <TouchableOpacity activeOpacity={1} onPress={() => {}}>
-          <Text
-            style={[
-              styles.textChoice,
-              {
-                color: '#BC2C3D',
-              },
-            ]}
-          >
-            Cancel
-          </Text>
-        </TouchableOpacity>
-      </View>
-    </SafeAreaView>
-  );
+  const [isModalVisible, setModalVisible] = React.useState<boolean>(false);
+
+  const toggleModal = React.useCallback(() => {
+    setModalVisible(!isModalVisible);
+  }, [isModalVisible]);
+
+  const [isChangeNameModalVisible, setChangeNameModalVisible] =
+    React.useState<boolean>(false);
+
+  const toggleChangeNameModal = React.useCallback(() => {
+    setChangeNameModalVisible(!isChangeNameModalVisible);
+  }, [isChangeNameModalVisible]);
 
   return (
     <>
+      {/*------------ START MODAL ----------------*/}
+      <Modal isVisible={isModalVisible} onBackdropPress={toggleModal}>
+        <SafeAreaView style={styles.bottomBoxContainer}>
+          <View style={styles.backgroundChoice}>
+            <View style={styles.textContainer}>
+              <Text
+                style={[
+                  styles.textChoice,
+                  {
+                    color: '#5C61F4',
+                  },
+                ]}
+              >
+                Change Group Image Profile
+              </Text>
+            </View>
+            <View style={styles.textContainer}>
+              <Text
+                style={[
+                  styles.textChoice,
+                  {
+                    color: '#5C61F4',
+                  },
+                ]}
+              >
+                Change Group Name
+              </Text>
+            </View>
+          </View>
+          <View
+            style={[
+              styles.backgroundChoice,
+              styles.textContainer,
+              {
+                marginTop: 8,
+              },
+            ]}
+          >
+            <TouchableOpacity activeOpacity={1} onPress={toggleModal}>
+              <Text
+                style={[
+                  styles.textChoice,
+                  {
+                    color: '#BC2C3D',
+                  },
+                ]}
+              >
+                Cancel
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </SafeAreaView>
+      </Modal>
+      {/*------------ END MODAL ----------------*/}
+
+      {/*------------ START CHANGE NAME MODAL ----------------*/}
+      <Modal isVisible={isModalVisible} onBackdropPress={toggleModal}>
+        <SafeAreaView style={styles.ChangeNameBoxContainer}>
+          <View style={styles.backgroundChoice}>
+            <TouchableOpacity
+              activeOpacity={1}
+              onPress={() => {
+                toggleModal();
+                toggleChangeNameModal();
+              }}
+              style={styles.textContainer}
+            >
+              <Text
+                style={[
+                  styles.textChoice,
+                  {
+                    color: '#5C61F4',
+                  },
+                ]}
+              >
+                Change Group Image Profile
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              activeOpacity={1}
+              onPress={toggleModal}
+              style={styles.textContainer}
+            >
+              <Text
+                style={[
+                  styles.textChoice,
+                  {
+                    color: '#5C61F4',
+                  },
+                ]}
+              >
+                Change Group Name
+              </Text>
+            </TouchableOpacity>
+          </View>
+          <View
+            style={[
+              styles.backgroundChoice,
+              styles.textContainer,
+              {
+                marginTop: 8,
+              },
+            ]}
+          >
+            <TouchableOpacity activeOpacity={1} onPress={toggleModal}>
+              <Text
+                style={[
+                  styles.textChoice,
+                  {
+                    color: '#BC2C3D',
+                  },
+                ]}
+              >
+                Cancel
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </SafeAreaView>
+      </Modal>
+      {/*------------ END CHANGE NAME MODAL ----------------*/}
+
       <ChatDefaultLayout
         route={route}
         navigation={navigation}
@@ -100,7 +182,7 @@ const GroupChatSetting: FC<PropsWithChildren<GroupChatSettingProps>> = (
             style={{
               alignItems: 'center',
             }}
-            onPress={() => {}}
+            onPress={toggleModal}
           >
             <View
               style={{
@@ -225,6 +307,13 @@ const styles = StyleSheet.create({
   bottomBoxContainer: {
     paddingHorizontal: 10,
     alignItems: 'center',
+    position: 'absolute',
+    width: '100%',
+    bottom: 50,
+  },
+
+  ChangeNameBoxContainer: {
+    flex: 1,
   },
 
   backgroundChoice: {
@@ -232,6 +321,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: '100%',
     borderRadius: 15,
+    zIndex: 0,
   },
 
   textChoice: {
@@ -242,6 +332,7 @@ const styles = StyleSheet.create({
     paddingVertical: 16,
     width: '100%',
     alignItems: 'center',
+    zIndex: 10,
   },
 });
 

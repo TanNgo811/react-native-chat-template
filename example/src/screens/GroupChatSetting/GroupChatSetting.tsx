@@ -8,31 +8,18 @@ import {
   View,
 } from 'react-native';
 import type { StackScreenProps } from '@react-navigation/stack';
-import { ChatDefaultLayout } from 'react-native-chat-bar';
+import { ChatDefaultLayout, ChoosingOption } from 'react-native-chat-bar';
 import AddUserIcon from '../../asserts/AddUserIcon';
-import RightArrow from '../../asserts/RightArrow';
 import GroupOutlinedIcon from '../../asserts/GroupOutlinedIcon';
 import OutGroupIcon from '../../asserts/OutGroupIcon';
 import BlockIcon from '../../asserts/BlockIcon';
 import FileIcon from '../../asserts/FileIcon';
 import PictureIcon from '../../asserts/PictureIcon';
-import BottomSheet from 'reanimated-bottom-sheet';
-import Animated from 'react-native-reanimated';
 
 const GroupChatSetting: FC<PropsWithChildren<GroupChatSettingProps>> = (
   props: PropsWithChildren<GroupChatSettingProps>
 ): ReactElement => {
   const { navigation, route } = props;
-
-  const sheetRef = React.useRef(null);
-
-  const handleClose = React.useCallback(() => {
-    sheetRef.current.snapTo(1);
-  }, []);
-
-  const snapPoint: (string | number)[] = [200, 0];
-
-  const fall = React.useRef(new Animated.Value<number>(1)).current;
 
   const renderContent = () => (
     <SafeAreaView style={styles.bottomBoxContainer}>
@@ -71,7 +58,7 @@ const GroupChatSetting: FC<PropsWithChildren<GroupChatSettingProps>> = (
           },
         ]}
       >
-        <TouchableOpacity activeOpacity={1} onPress={handleClose}>
+        <TouchableOpacity activeOpacity={1} onPress={() => {}}>
           <Text
             style={[
               styles.textChoice,
@@ -89,16 +76,6 @@ const GroupChatSetting: FC<PropsWithChildren<GroupChatSettingProps>> = (
 
   return (
     <>
-      <BottomSheet
-        ref={sheetRef}
-        snapPoints={snapPoint}
-        initialSnap={1}
-        renderHeader={renderContent}
-        callbackNode={fall}
-        enabledGestureInteraction={true}
-        enabledContentTapInteraction={false}
-      />
-
       <ChatDefaultLayout
         route={route}
         navigation={navigation}
@@ -123,9 +100,7 @@ const GroupChatSetting: FC<PropsWithChildren<GroupChatSettingProps>> = (
             style={{
               alignItems: 'center',
             }}
-            onPress={() => {
-              sheetRef.current.snapTo(0);
-            }}
+            onPress={() => {}}
           >
             <View
               style={{
@@ -171,123 +146,44 @@ const GroupChatSetting: FC<PropsWithChildren<GroupChatSettingProps>> = (
               <AddUserIcon style={{ marginTop: 16 }} />
             </TouchableOpacity>
           </View>
+
           <View style={styles.section}>
             <Text style={styles.titleItem}>Group Information</Text>
-            <TouchableOpacity
-              activeOpacity={1}
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                marginVertical: 8,
-              }}
+            <ChoosingOption
+              icon={<GroupOutlinedIcon />}
               onPress={() => {}}
-            >
-              <View
-                style={{
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                }}
-              >
-                <GroupOutlinedIcon />
-                <Text style={{ marginLeft: 12 }}>Create New Group</Text>
-              </View>
-              <RightArrow />
-            </TouchableOpacity>
+              title={'Group Members'}
+            />
           </View>
 
           <View style={styles.section}>
             <Text style={styles.titleItem}>Other</Text>
-            <TouchableOpacity
-              activeOpacity={1}
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                marginVertical: 8,
-              }}
+            <ChoosingOption
+              icon={<PictureIcon />}
               onPress={() => {}}
-            >
-              <View
-                style={{
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                }}
-              >
-                <PictureIcon />
-                <Text style={{ marginLeft: 12 }}>Media Files</Text>
-              </View>
-              <RightArrow />
-            </TouchableOpacity>
+              title={'Media Files'}
+            />
 
-            <TouchableOpacity
-              activeOpacity={1}
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                marginVertical: 8,
-              }}
+            <ChoosingOption
+              icon={<FileIcon />}
               onPress={() => {}}
-            >
-              <View
-                style={{
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                }}
-              >
-                <FileIcon />
-                <Text style={{ marginLeft: 12 }}>Shared Files</Text>
-              </View>
-              <RightArrow />
-            </TouchableOpacity>
+              title={'Shared Files'}
+            />
           </View>
 
           <View style={styles.section}>
             <Text style={styles.titleItem}>Privacy</Text>
-            <TouchableOpacity
-              activeOpacity={1}
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                marginVertical: 8,
-              }}
+            <ChoosingOption
+              icon={<BlockIcon />}
               onPress={() => {}}
-            >
-              <View
-                style={{
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                }}
-              >
-                <BlockIcon />
-                <Text style={{ marginLeft: 12 }}>Block Users</Text>
-              </View>
-              <RightArrow />
-            </TouchableOpacity>
+              title={'Block Users'}
+            />
 
-            <TouchableOpacity
-              activeOpacity={1}
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                marginVertical: 8,
-              }}
+            <ChoosingOption
+              icon={<OutGroupIcon />}
               onPress={() => {}}
-            >
-              <View
-                style={{
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                }}
-              >
-                <OutGroupIcon />
-                <Text style={{ marginLeft: 12 }}>Out Group</Text>
-              </View>
-              <RightArrow />
-            </TouchableOpacity>
+              title={'Out Group'}
+            />
           </View>
         </View>
       </ChatDefaultLayout>

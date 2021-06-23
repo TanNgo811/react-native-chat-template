@@ -1,8 +1,12 @@
 import React, { FC, PropsWithChildren, ReactElement } from 'react';
-import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import type { StackScreenProps } from '@react-navigation/stack';
-import { ChatDefaultLayout, SearchBar } from 'react-native-chat-bar';
-import RightArrow from '../../asserts/RightArrow';
+import {
+  ChatDefaultLayout,
+  ChoosingOption,
+  ChoosingUser,
+  SearchBar,
+} from 'react-native-chat-bar';
 import GroupIcon from '../../asserts/GroupIcon';
 
 const CreateNewConversation: FC<PropsWithChildren<CreateNewConversationProps>> =
@@ -44,81 +48,25 @@ const CreateNewConversation: FC<PropsWithChildren<CreateNewConversationProps>> =
       >
         <SearchBar isRoundedBorder={false} />
         <View style={styles.container}>
-          <TouchableOpacity
-            activeOpacity={1}
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              marginVertical: 16,
-            }}
+          <ChoosingOption
             onPress={handleGoToCreateGroupConversation}
-          >
-            <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-              }}
-            >
-              <GroupIcon />
-              <Text style={{ marginLeft: 12 }}>Create New Group</Text>
-            </View>
-            <RightArrow />
-          </TouchableOpacity>
+            title={'Create New Group'}
+            icon={<GroupIcon />}
+          />
 
           <Text style={{ marginVertical: 8 }}>Suggestion</Text>
 
-          <TouchableOpacity
-            activeOpacity={1}
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              marginVertical: 4,
-            }}
+          <ChoosingUser
             onPress={handleGoToChatDetail}
-          >
-            <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-              }}
-            >
-              <Image
-                source={{
-                  uri: 'https://png.pngtree.com/svg/20161027/service_default_avatar_182956.png',
-                }}
-                style={styles.image}
-              />
-              <Text style={{ marginLeft: 12 }}>User 1</Text>
-            </View>
-          </TouchableOpacity>
+            userName={'User 1'}
+            groupPick={false}
+          />
 
-          <TouchableOpacity
-            activeOpacity={1}
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              marginVertical: 4,
-            }}
+          <ChoosingUser
             onPress={handleGoToChatDetail}
-          >
-            <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-              }}
-            >
-              <Image
-                source={{
-                  uri: 'https://png.pngtree.com/svg/20161027/service_default_avatar_182956.png',
-                }}
-                style={styles.image}
-              />
-              <Text style={{ marginLeft: 12 }}>User 2</Text>
-            </View>
-          </TouchableOpacity>
+            userName={'User 2'}
+            groupPick={false}
+          />
         </View>
       </ChatDefaultLayout>
     );

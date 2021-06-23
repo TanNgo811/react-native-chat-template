@@ -20,6 +20,7 @@ const ChatDetail: FC<PropsWithChildren<ChatDetailProps>> = (
       title={'Username'}
       left={'back-button'}
       right={<View />}
+      rightType={'other'}
     >
       <View style={styles.container}>
         <ConversationDetail listAnswer={ListAnswer} />

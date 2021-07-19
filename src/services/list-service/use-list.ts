@@ -1,9 +1,8 @@
 import type { Model, ModelFilter } from 'react3l-common';
 import type { Dispatch, Reducer } from 'react';
 import React from 'react';
-import { forkJoin, Subscription, Observable } from 'rxjs';
+import { forkJoin, Observable, Subscription } from 'rxjs';
 import { finalize } from 'rxjs/operators';
-import { showError } from '../../helper/Toast';
 
 const DEFAULT_TAKE: number = 10;
 
@@ -253,7 +252,7 @@ export function useList<
       },
       () => {
         setIsFirstLoading(true);
-        showError('Server Error');
+        console.log('Server Error');
       }
     );
     return () => {

@@ -1,6 +1,9 @@
-import React, { FC, PropsWithChildren, ReactElement } from 'react';
+import React from 'reactn';
+import type { FC, PropsWithChildren, ReactElement } from 'react';
 import {
-  Button,
+  FlatList,
+  ListRenderItem,
+  ListRenderItemInfo,
   SafeAreaView,
   StyleSheet,
   TouchableOpacity,
@@ -9,23 +12,82 @@ import type { StackScreenProps } from '@react-navigation/stack';
 import {
   ChatDefaultLayout,
   ConversationItem,
+  conversationService,
   SearchBar,
+  signalRService,
 } from 'react-native-chat-bar';
 import PlusIcon from '../../asserts/PlusIcon';
-import type { AppUser } from '../../models/AppUser';
+import { conversationRepository } from '../../repository/conversation-repository';
+import type { Conversation } from '../../models/Conversation';
+import type { GlobalState } from '../../app/global-state';
+import { globalStateRepository } from '../../repository/global-state-repository';
+import { API_BASE_URL, API_SIGNALR_ROUTE } from '../../config/api-consts';
 
 const ChatList: FC<PropsWithChildren<ChatListProps>> = (
   props: PropsWithChildren<ChatListProps>
 ): ReactElement => {
   const { navigation, route } = props;
 
-  const handleGoToChatDetail = React.useCallback(() => {
-    navigation.navigate('ChatDetail');
-  }, [navigation]);
-
   const handleGoToCreateNewConversation = React.useCallback(() => {
     navigation.navigate('CreateNewConversation');
   }, [navigation]);
+
+  const [listConversation, , , refreshing, , loadMore, handRefresh, , , ,] =
+    conversationService.useListConversation(
+      conversationRepository.list,
+      conversationRepository.count
+    );
+
+  const [currentUser] = React.useGlobal<GlobalState, 'user'>('user');
+
+  const [token] = React.useGlobal<GlobalState, 'token'>('token');
+
+  conversationService.useGetCurrentGlobalUser(
+    currentUser,
+    conversationRepository.getGlobalUser,
+    globalStateRepository.saveGlobalUser
+  );
+
+  React.useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      signalRService
+        .hubConnectionSignalr(
+          token,
+          API_BASE_URL,
+          API_SIGNALR_ROUTE,
+          globalStateRepository.addTotalMessage
+        )
+        .then(() => {});
+    });
+    return function cleanup() {
+      unsubscribe();
+    };
+  }, [navigation, token]);
+
+  const handleGoToChatDetail = React.useCallback(
+    (item: Conversation) => {
+      navigation.navigate('ChatDetail', {
+        conversation: item,
+      });
+    },
+    [navigation]
+  );
+
+  const renderItem: ListRenderItem<Conversation> = React.useCallback(
+    ({ item }: ListRenderItemInfo<Conversation>) => (
+      <ConversationItem
+        conversation={item}
+        key={item.id}
+        onPress={() => {
+          handleGoToChatDetail(item);
+        }}
+        onDeleteConversation={async () => {
+          // await handleDelete(item);
+        }}
+      />
+    ),
+    [handleGoToChatDetail]
+  );
 
   return (
     <>
@@ -52,11 +114,17 @@ const ChatList: FC<PropsWithChildren<ChatListProps>> = (
         <SafeAreaView style={styles.container}>
           <SearchBar isRoundedBorder={true} />
 
-          <ConversationItem onPress={handleGoToChatDetail} active={true} />
-
-          <ConversationItem onPress={handleGoToChatDetail} active={true} />
-
-          <ConversationItem onPress={handleGoToChatDetail} active={true} />
+          <FlatList
+            renderItem={renderItem}
+            data={listConversation}
+            onRefresh={handRefresh}
+            refreshing={refreshing}
+            showsVerticalScrollIndicator={false}
+            keyExtractor={(item: Conversation, index) =>
+              item?.id?.toString() + index.toString()
+            }
+            onEndReached={loadMore}
+          />
         </SafeAreaView>
       </ChatDefaultLayout>
     </>

@@ -1,6 +1,6 @@
 import type { Dispatch } from 'react';
 import React from 'react';
-import type { Subscription } from 'rxjs';
+import type { Observable, Subscription } from 'rxjs';
 import type { ConversationMessage } from '../../models/ConversationMessage';
 import type { ConversationMessageFilter } from '../../models/ConversationMessageFilter';
 import type { ListAction } from '../list-service/use-list';
@@ -9,8 +9,6 @@ import { ConversationFilter } from '../../models/ConversationFilter';
 import type { Conversation } from '../../models/Conversation';
 import type { GlobalUser } from '../../models/GlobalUser';
 import moment from 'moment';
-import { showError } from '../../helper/Toast';
-import type { Observable } from 'rxjs';
 
 export const messageConversationServices = {
   useListMessages(
@@ -114,7 +112,7 @@ export const messageConversationServices = {
             setCurrentMessage(message);
           },
           () => {
-            showError('errors.cannotCreateMessage');
+            console.log('errors.cannotCreateMessage');
           }
         );
         return function cleanup() {
@@ -154,7 +152,7 @@ export const messageConversationServices = {
             setCurrentMessage(message);
           },
           () => {
-            showError('errors.cannotCreateMessage');
+            console.log('errors.cannotCreateMessage');
           }
         );
         return function cleanup() {
@@ -171,7 +169,7 @@ export const messageConversationServices = {
         }).subscribe(
           () => {},
           () => {
-            showError('errors.cannotCreateMessage');
+            console.log('errors.cannotCreateMessage');
           }
         );
         return function cleanup() {
@@ -189,7 +187,7 @@ export const messageConversationServices = {
         }).subscribe(
           () => {},
           () => {
-            showError('errors.cannotCreateMessage');
+            console.log('errors.cannotCreateMessage');
           }
         );
         return function cleanup() {

@@ -7,6 +7,7 @@ import CreateNewGroupConversation from '../screens/CreateNewGroupConversation/Cr
 import GroupChatDetail from '../screens/GroupChatDetail/GroupChatDetail';
 import GroupChatSetting from '../screens/GroupChatSetting/GroupChatSetting';
 import ChatInformation from '../screens/ChatInformation/ChatInformation';
+import LoginScreen from '../screens/LoginScreen/LoginScreen';
 
 const { Navigator, Screen } = createStackNavigator();
 
@@ -14,13 +15,19 @@ const RootNavigator: FC<PropsWithChildren<RootNavigatorProps>> =
   (): ReactElement => {
     return (
       <Navigator
-        initialRouteName={'ChatList'}
+        initialRouteName={'LoginScreen'}
         headerMode="none"
         screenOptions={{
           gestureEnabled: true,
           animationEnabled: false,
         }}
       >
+        <Screen
+          name={'LoginScreen'}
+          component={LoginScreen}
+          initialParams={{}}
+        />
+
         <Screen name={'ChatList'} component={ChatList} initialParams={{}} />
 
         <Screen name={'ChatDetail'} component={ChatDetail} initialParams={{}} />

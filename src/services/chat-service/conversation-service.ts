@@ -6,10 +6,10 @@ import type { ListAction } from '../list-service/use-list';
 import { listService } from '../list-service';
 import type { GlobalUser } from '../../models/GlobalUser';
 import type { Observable, Subscription } from 'rxjs';
-import { showError } from '../../helper/Toast';
 import type { GlobalUserFilter } from '../../models/GlobalUserFilter';
 import type { StackScreenProps } from '@react-navigation/stack';
 import type { ConversationParticipant } from '../../models/ConversationParticipant';
+import type { AppUser } from '../../types/AppUser';
 
 const DEFAULT_TAKE = 10;
 
@@ -95,7 +95,7 @@ export const conversationService = {
             setLoading(false);
           },
           () => {
-            showError('errors.cannotGetListGlobalUser');
+            console.log('errors.cannotGetListGlobalUser');
           }
         );
       return function cleanup() {
@@ -117,7 +117,7 @@ export const conversationService = {
             setLoading(false);
           },
           () => {
-            showError('errors.cannotGetListGlobalUser');
+            console.log('errors.cannotGetListGlobalUser');
           }
         );
       return function cleanup() {
@@ -136,7 +136,7 @@ export const conversationService = {
             setLoading(false);
           },
           () => {
-            showError('errors.cannotGetListGlobalUser');
+            console.log('errors.cannotGetListGlobalUser');
           }
         );
       return function cleanup() {
@@ -159,7 +159,7 @@ export const conversationService = {
               setLoading(false);
             },
             () => {
-              showError('errors.cannotGetListGlobalUser');
+              console.log('errors.cannotGetListGlobalUser');
             }
           );
         return function cleanup() {
@@ -179,7 +179,7 @@ export const conversationService = {
   },
 
   useGetCurrentGlobalUser(
-    currentGlobalUser: GlobalUser,
+    currentUser: AppUser,
     getGlobalUserConversationRepository: (
       user: GlobalUser
     ) => Observable<GlobalUser>,
@@ -187,20 +187,20 @@ export const conversationService = {
   ): [] {
     const handleGetGlobalUser = React.useCallback(() => {
       const subscription: Subscription = getGlobalUserConversationRepository({
-        rowId: currentGlobalUser.rowId,
+        rowId: currentUser.rowId,
       }).subscribe(
         async (user: GlobalUser) => {
           await saveGlobalUser(user);
         },
         () => {
-          showError('errors.cannotGetListGlobalUser');
+          console.log('errors.cannotGetListGlobalUser');
         }
       );
       return function cleanup() {
         subscription.unsubscribe();
       };
     }, [
-      currentGlobalUser.rowId,
+      currentUser.rowId,
       getGlobalUserConversationRepository,
       saveGlobalUser,
     ]);
@@ -256,7 +256,7 @@ export const conversationService = {
             setNewConversation(conversation);
           },
           () => {
-            showError('errors.cannotCreateNewConversation');
+            console.log('errors.cannotCreateNewConversation');
           }
         );
         return function cleanup() {
@@ -275,7 +275,7 @@ export const conversationService = {
             await setNewConversation(conversation);
           },
           () => {
-            showError('errors.cannotGetListGlobalUser');
+            console.log('errors.cannotGetListGlobalUser');
           }
         );
         return function cleanup() {
@@ -292,7 +292,7 @@ export const conversationService = {
         }).subscribe(
           () => {},
           () => {
-            showError('errors.cannotGetListGlobalUser');
+            console.log('errors.cannotGetListGlobalUser');
           }
         );
         return function cleanup() {
@@ -309,7 +309,7 @@ export const conversationService = {
         ).subscribe(
           () => {},
           () => {
-            showError('errors.cannotGetListGlobalUser');
+            console.log('errors.cannotGetListGlobalUser');
           }
         );
         return function cleanup() {
@@ -352,7 +352,7 @@ export const conversationService = {
             navigation.navigate(conversationListScreen);
           },
           () => {
-            showError('errors.cannotGetListGlobalUser');
+            console.log('errors.cannotGetListGlobalUser');
           }
         );
         return function cleanup() {
@@ -398,7 +398,7 @@ export const conversationService = {
             });
           },
           () => {
-            showError('errors.cannotCreateNewConversation');
+            console.log('errors.cannotCreateNewConversation');
           }
         );
         return function cleanup() {
@@ -432,7 +432,7 @@ export const conversationService = {
             });
           },
           () => {
-            showError('errors.cannotCreateNewConversation');
+            console.log('errors.cannotCreateNewConversation');
           }
         );
         return function cleanup() {

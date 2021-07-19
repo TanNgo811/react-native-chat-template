@@ -1,5 +1,8 @@
 import React, { FC, PropsWithChildren, ReactElement } from 'react';
 import { Image, TouchableOpacity, View, Text, StyleSheet } from 'react-native';
+import type { ConversationMessage } from '../../../models/ConversationMessage';
+import moment from 'moment';
+import ImageChat from '../ImageConversation/ImageConversation';
 
 const MessageViewComponent: FC<PropsWithChildren<MessageViewComponentProps>> = (
   props: PropsWithChildren<MessageViewComponentProps>
@@ -11,6 +14,86 @@ const MessageViewComponent: FC<PropsWithChildren<MessageViewComponentProps>> = (
   const handleShowTime = React.useCallback(() => {
     setTime(!time);
   }, [time]);
+
+  const [messageContainer, setMessageContainer] = React.useState<any>(null);
+
+  React.useEffect(() => {
+    try {
+      setMessageContainer(JSON.parse(item?.content));
+    } catch (e) {
+      setMessageContainer(item.content);
+    }
+  }, [item.content]);
+
+  const renderImage = (images: string[]) => (
+    <View>
+      <View style={[{ flexDirection: 'row' }]}>
+        {images[0] && (
+          <ImageChat imageSource={images[0]} style={styles.imageComponent} />
+        )}
+        {images[1] && (
+          <ImageChat imageSource={images[1]} style={styles.imageComponent} />
+        )}
+      </View>
+      <View style={[{ flexDirection: 'row' }]}>
+        {images[2] && (
+          <ImageChat imageSource={images[2]} style={styles.imageComponent} />
+        )}
+        {images.length > 3 ? (
+          <View
+            style={[
+              {
+                justifyContent: 'center',
+                alignItems: 'center',
+              },
+            ]}
+          >
+            <View style={styles.moreThan4} />
+            <View style={styles.countContainer}>
+              <Text style={[styles.textMore]}>+{images.length - 4}</Text>
+            </View>
+            <ImageChat
+              imageSource={images[3]}
+              style={[styles.imageComponent]}
+            />
+          </View>
+        ) : (
+          images[3] && (
+            <ImageChat imageSource={images[3]} style={styles.image} />
+          )
+        )}
+      </View>
+    </View>
+  );
+
+  const renderMessageComponent =
+    messageContainer && typeof messageContainer === 'object' ? (
+      <>
+        {messageContainer.message && (
+          <Text style={styles.value}>{messageContainer.message}</Text>
+        )}
+        {messageContainer.imagePath &&
+        Array.isArray(messageContainer.imagePath) ? (
+          messageContainer.imagePath.length > 1 ? (
+            renderImage(messageContainer.imagePath)
+          ) : (
+            <ImageChat
+              imageSource={messageContainer.imagePath[0]}
+              style={styles.image}
+            />
+          )
+        ) : (
+          messageContainer.imagePath && (
+            <ImageChat
+              imageSource={messageContainer.imagePath}
+              style={styles.image}
+            />
+          )
+        )}
+      </>
+    ) : (
+      <Text style={styles.value}>{messageContainer}</Text>
+    );
 
   return (
     <>
@@ -28,13 +111,11 @@ const MessageViewComponent: FC<PropsWithChildren<MessageViewComponentProps>> = (
               <View style={styles.thumbSize} />
             )}
             <View style={styles.timeAndMessageLeft}>
-              <View style={styles.viewTitleLeft}>
-                <Text style={styles.value}>{item.value}</Text>
-              </View>
+              <View style={styles.viewTitleLeft}>{renderMessageComponent}</View>
               {time && (
                 <View style={[styles.timeContainer]}>
                   <Text style={[styles.time, { textAlign: 'right' }]}>
-                    4:20 am
+                    {moment(item.createdAt).format('hh:mm A')}
                   </Text>
                 </View>
               )}
@@ -48,12 +129,12 @@ const MessageViewComponent: FC<PropsWithChildren<MessageViewComponentProps>> = (
           style={[styles.containerViewRight]}
         >
           <View style={styles.timeAndMessageRight}>
-            <View style={styles.viewTitleRight}>
-              <Text style={styles.value}>{item.value}</Text>
-            </View>
+            <View style={styles.viewTitleRight}>{renderMessageComponent}</View>
             {time && (
               <View style={[styles.timeContainer]}>
-                <Text style={styles.time}>4:20 am</Text>
+                <Text style={styles.time}>
+                  {moment(item.createdAt).format('hh:mm A')}
+                </Text>
               </View>
             )}
           </View>
@@ -138,6 +219,47 @@ const styles = StyleSheet.create({
     letterSpacing: -0.02,
     color: '#50555C',
   },
+
+  imageComponent: {
+    height: 100,
+    width: 100,
+    borderRadius: 10,
+    margin: 3,
+    zIndex: 0,
+  },
+
+  textMore: {
+    color: 'white',
+    fontSize: 16,
+  },
+
+  image: {
+    height: 150,
+    width: 150,
+    borderRadius: 5,
+  },
+
+  moreThan4: {
+    height: 100,
+    width: 100,
+    borderRadius: 10,
+    margin: 3,
+    backgroundColor: 'black',
+    opacity: 0.4,
+    position: 'absolute',
+    zIndex: 10,
+  },
+
+  countContainer: {
+    height: 100,
+    width: 100,
+    borderRadius: 10,
+    margin: 3,
+    zIndex: 11,
+    position: 'absolute',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
 });
 
 export interface MessageViewComponentProps {
@@ -146,7 +268,7 @@ export interface MessageViewComponentProps {
 
   response: boolean;
 
-  item: any;
+  item: ConversationMessage;
 }
 
 MessageViewComponent.defaultProps = {

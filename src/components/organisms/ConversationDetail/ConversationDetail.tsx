@@ -10,11 +10,13 @@ import {
 } from 'react-native';
 import MessageItem from '../../atoms/MessageItem/MessageItem';
 import ArrowDown from '../../atoms/Icons/ArrowDown';
+import type { GlobalUser } from '../../../models/GlobalUser';
+import type { ConversationMessage } from '../../../models/ConversationMessage';
 
 const ConversationDetail: FC<PropsWithChildren<ConversationDetailProps>> = (
   props: PropsWithChildren<ConversationDetailProps>
 ): ReactElement => {
-  const { listAnswer } = props;
+  const { listAnswer, currentGlobalUser } = props;
 
   const [ref, setRef] = React.useState<any>();
 
@@ -33,9 +35,10 @@ const ConversationDetail: FC<PropsWithChildren<ConversationDetailProps>> = (
         <MessageItem
           item={item}
           key={index}
-          response={item.userId === 1}
+          response={item.globalUserId !== currentGlobalUser.id}
           consecutive={
-            index !== 0 && listAnswer[index - 1].userId === item.userId
+            index !== 0 &&
+            listAnswer[index - 1].globalUserId === item.globalUserId
           }
         />
       );
@@ -111,7 +114,9 @@ const styles = StyleSheet.create({
 
 export interface ConversationDetailProps {
   //
-  listAnswer: any;
+  listAnswer: ConversationMessage[];
+
+  currentGlobalUser?: GlobalUser;
 }
 
 ConversationDetail.defaultProps = {

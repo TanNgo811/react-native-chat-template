@@ -3,7 +3,6 @@ import { HubConnectionState } from '@microsoft/signalr';
 import type { SignalRService } from './index';
 import type { ConversationMessage } from '../../models/ConversationMessage';
 import moment from 'moment';
-import { ToastAndroid } from 'react-native';
 
 // 'http://192.168.28.33:10100/rpc/utils/chathub'
 
@@ -18,14 +17,16 @@ export async function hubConnectionSignalr(
     .withUrl(API_BASE_URL + '/' + API_SIGNALR_ROUTE, {
       accessTokenFactory: () => token,
     })
-    // .withAutomaticReconnect()
     .build();
 
   if (hub) {
     this.hubConnection = hub;
     await this.hubConnection
       .start()
-      .then(() => ToastAndroid.show('SignalR Connected', 250));
+      .then(() => {})
+      .catch(() => {
+        console.log('Lỗi kết nối với server chat');
+      });
 
     if (this.hubConnection.state === HubConnectionState.Connected) {
       try {
@@ -54,7 +55,7 @@ export async function hubConnectionSignalr(
           }
         );
       } catch (e) {
-        ToastAndroid.show(e.toString(), 250);
+        console.log(e.toString());
       }
     }
   }

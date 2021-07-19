@@ -1,21 +1,14 @@
 import React, { FC, PropsWithChildren, ReactElement } from 'react';
 import {
-  Button,
-  SafeAreaView,
-  StyleSheet,
-  TouchableOpacity,
-} from 'react-native';
-import type { StackScreenProps } from '@react-navigation/stack';
-import {
   ChatDefaultLayout,
   ConversationItem,
   SearchBar,
 } from 'react-native-chat-bar';
-import PlusIcon from '../../asserts/PlusIcon';
-import type { AppUser } from '../../models/AppUser';
+import { SafeAreaView, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import type { StackScreenProps } from '@react-navigation/stack';
 
-const ChatList: FC<PropsWithChildren<ChatListProps>> = (
-  props: PropsWithChildren<ChatListProps>
+const ChatInformation: FC<PropsWithChildren<ChatInformationProps>> = (
+  props: PropsWithChildren<ChatInformationProps>
 ): ReactElement => {
   const { navigation, route } = props;
 
@@ -30,7 +23,7 @@ const ChatList: FC<PropsWithChildren<ChatListProps>> = (
   return (
     <>
       <ChatDefaultLayout
-        title={'Messages'}
+        title={''}
         navigation={navigation}
         route={route}
         left={'back-button'}
@@ -45,7 +38,7 @@ const ChatList: FC<PropsWithChildren<ChatListProps>> = (
               paddingTop: 5,
             }}
           >
-            <PlusIcon />
+            <Text>Apply</Text>
           </TouchableOpacity>
         }
       >
@@ -69,16 +62,16 @@ const styles = StyleSheet.create({
   },
 });
 
-export interface ChatListProps extends StackScreenProps<any> {
+export interface ChatInformationProps extends StackScreenProps<any> {
   //
 }
 
-ChatList.defaultProps = {
+ChatInformation.defaultProps = {
   //
 };
 
-ChatList.propTypes = {
+ChatInformation.propTypes = {
   //
 };
 
-export default ChatList;
+export default ChatInformation;

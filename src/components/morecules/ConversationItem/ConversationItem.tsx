@@ -83,8 +83,8 @@ const styles = StyleSheet.create({
   },
   image: {
     borderRadius: 50,
-    width: 60,
-    height: 60,
+    width: 50,
+    height: 50,
   },
   nameView: {
     justifyContent: 'space-between',

@@ -304,7 +304,7 @@ const styles = StyleSheet.create({
     color: '#848484',
   },
 
-  bottomBoxContainer: {
+  p: {
     paddingHorizontal: 10,
     alignItems: 'center',
     position: 'absolute',

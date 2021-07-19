@@ -14,19 +14,11 @@ export class AppUser extends Model {
 
   public token?: string;
 
-  public email?: string;
-
-  public phone?: string;
-
-  public userStatusId?: number;
-
   public createdAt?: Moment;
 
   public updatedAt?: Moment;
 
   public deletedAt?: Moment;
-
-  public statusId?: number;
 
   public rowId?: string;
 }

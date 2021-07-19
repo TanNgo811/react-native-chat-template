@@ -1,12 +1,13 @@
 import React, { FC, PropsWithChildren, ReactElement } from 'react';
 import {
   Dimensions,
+  FlatList,
   ListRenderItem,
   ListRenderItemInfo,
   StyleSheet,
+  TouchableOpacity,
   View,
 } from 'react-native';
-import { AutoScrollFlatList } from 'react-native-autoscroll-flatlist';
 import MessageItem from '../../atoms/MessageItem/MessageItem';
 import ArrowDown from '../../atoms/Icons/ArrowDown';
 
@@ -18,6 +19,13 @@ const ConversationDetail: FC<PropsWithChildren<ConversationDetailProps>> = (
   const [ref, setRef] = React.useState<any>();
 
   const { width } = Dimensions.get('window');
+
+  const [isScrollEndIconVisible, setScrollEndIconVisible] =
+    React.useState<boolean>(false);
+
+  const handleScrollToEnd = React.useCallback(() => {
+    ref.scrollToIndex({ animate: true, index: 0, viewOffset: 50 });
+  }, [ref]);
 
   const renderItem: ListRenderItem<any> = React.useCallback(
     ({ item, index }: ListRenderItemInfo<any>) => {
@@ -37,7 +45,7 @@ const ConversationDetail: FC<PropsWithChildren<ConversationDetailProps>> = (
 
   return (
     <>
-      <AutoScrollFlatList
+      <FlatList
         ref={(ref) => {
           setRef(ref);
         }}
@@ -47,25 +55,34 @@ const ConversationDetail: FC<PropsWithChildren<ConversationDetailProps>> = (
         showsVerticalScrollIndicator={false}
         keyExtractor={(item, index) => item.id + index.toString()}
         refreshing={true}
-        threshold={100}
-        onScrollToIndexFailed={() => {
-          ref.scrollToEnd();
+        inverted={true}
+        scrollEventThrottle={10}
+        onScroll={(event) => {
+          if (event.nativeEvent.contentOffset.y > 150) {
+            setScrollEndIconVisible(true);
+          } else {
+            setScrollEndIconVisible(false);
+          }
         }}
-        indicatorComponent={
-          <View
-            style={[
-              {
-                left: width * 0.45,
-              },
-              styles.scrollToEndContainer,
-            ]}
-          >
-            <View style={[styles.scrollToEnd]}>
-              <ArrowDown />
-            </View>
-          </View>
-        }
       />
+      {isScrollEndIconVisible && (
+        <TouchableOpacity
+          activeOpacity={1}
+          style={[
+            {
+              position: 'absolute',
+              left: width * 0.45,
+              bottom: '3%',
+              alignItems: 'center',
+            },
+          ]}
+          onPress={handleScrollToEnd}
+        >
+          <View style={[styles.scrollToEnd]}>
+            <ArrowDown />
+          </View>
+        </TouchableOpacity>
+      )}
     </>
   );
 };

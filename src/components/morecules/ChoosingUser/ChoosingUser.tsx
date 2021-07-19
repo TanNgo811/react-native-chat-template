@@ -1,24 +1,35 @@
 import React, { FC, PropsWithChildren, ReactElement } from 'react';
-import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
-import CheckedRound from '../../atoms/Icons/CheckedRound';
-import NonCheckedRound from '../../atoms/Icons/NonCheckedRound';
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import type { GlobalUser } from '../../../models/GlobalUser';
+import type { StackScreenProps } from '@react-navigation/stack';
 
 const ChoosingUser: FC<PropsWithChildren<ChoosingUsersProps>> = (
   props: PropsWithChildren<ChoosingUsersProps>
 ): ReactElement => {
-  const { userName, userAvatar, groupPick } = props;
+  const { user, groupPick, navigation, onSelectUser, API_BASE_URL } = props;
 
   const [isChecked, setCheck] = React.useState(false);
+
+  // const [handleCreateNewConversation] =
+  //   chatService.useCreateNewConversation(navigation);
 
   const handleToggleCheck = React.useCallback(() => {
     setCheck(!isChecked);
   }, [isChecked, setCheck]);
 
+  const handleGroupPick = React.useCallback(() => {
+    handleToggleCheck();
+  }, [handleToggleCheck]);
+
+  const handlePressed = React.useCallback(async () => {
+    // await handleCreateNewConversation(user);
+  }, []);
+
   return (
     <TouchableOpacity
       activeOpacity={1}
       style={[styles.container]}
-      onPress={handleToggleCheck}
+      onPress={!groupPick ? handlePressed : onSelectUser}
     >
       <View
         style={{
@@ -28,15 +39,23 @@ const ChoosingUser: FC<PropsWithChildren<ChoosingUsersProps>> = (
       >
         <Image
           source={{
-            uri: userAvatar
-              ? userAvatar
+            uri: user.avatar
+              ? `${API_BASE_URL + user.avatar.replace('/', '')}`
               : 'https://png.pngtree.com/svg/20161027/service_default_avatar_182956.png',
           }}
           style={styles.image}
         />
-        <Text style={styles.title}>{userName}</Text>
+        <Text style={[styles.title]}>{user.displayName}</Text>
       </View>
-      {groupPick && isChecked ? <CheckedRound /> : <NonCheckedRound />}
+      {/*{groupPick ? (*/}
+      {/*  isChecked ? (*/}
+      {/*    <IconWrapper component={require('assets/icons/RoundChecked.svg')} />*/}
+      {/*  ) : (*/}
+      {/*    <IconWrapper component={require('assets/icons/RoundUnchecked.svg')} />*/}
+      {/*  )*/}
+      {/*) : (*/}
+      {/*  <View />*/}
+      {/*)}*/}
     </TouchableOpacity>
   );
 };
@@ -54,18 +73,20 @@ const styles = StyleSheet.create({
     height: 36,
   },
 
-  title: { marginLeft: 12 },
+  title: { marginLeft: 12, fontSize: 14 },
 });
 
 export interface ChoosingUsersProps {
   //
-  userName: string;
+  user: GlobalUser;
 
-  userAvatar?: string;
+  onSelectUser?: () => void;
 
-  onPress?: () => void;
+  groupPick?: boolean;
 
-  groupPick: boolean;
+  navigation?: StackScreenProps<any>['navigation'];
+
+  API_BASE_URL: string;
 }
 
 ChoosingUser.defaultProps = {

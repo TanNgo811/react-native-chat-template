@@ -74,6 +74,8 @@ export interface ChatBarProps extends TextInputProps {
   primaryColor?: string;
 
   onSendMessage?: () => void;
+
+  testString?: string;
 }
 
 ChatBar.defaultProps = {

@@ -13,10 +13,11 @@ import {
   StyleSheet,
   Text,
   View,
+  ToastAndroid,
 } from 'react-native';
 import CameraRoll from '@react-native-community/cameraroll';
 import useEffectOnce from 'react-use/lib/useEffectOnce';
-import { showError, showWarning } from '../../../helper/Toast';
+// import { showError, showWarning } from '../../../helper/Toast';
 import CloseIcon from '../../atoms/Icons/CloseIcon';
 import type { ImagePickerResponse } from '../../../types/ImageType';
 import SendImageButton from './SendImageButton';
@@ -65,7 +66,7 @@ const AnimatedImagePicker: FC<PropsWithChildren<AnimatedImagePickerProps>> = (
     end_cursor: null,
   });
 
-  const loadMoreImages = async () => {
+  const loadMoreImages = React.useCallback(async () => {
     let res: any = null;
     if (pageInfo.has_next_page && pageInfo.end_cursor === null) {
       res = await CameraRoll.getPhotos({
@@ -98,14 +99,14 @@ const AnimatedImagePicker: FC<PropsWithChildren<AnimatedImagePickerProps>> = (
 
       setImages(data);
     }
-  };
+  }, [images, pageInfo.end_cursor, pageInfo.has_next_page]);
 
   const [mode, setMode] = React.useState<'small' | 'big'>('small');
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const position = new Animated.Value(1);
 
-  const requestPermission = async () => {
+  const requestPermission = React.useCallback(async () => {
     try {
       const androidGranted = await PermissionsAndroid.request(
         PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
@@ -120,12 +121,12 @@ const AnimatedImagePicker: FC<PropsWithChildren<AnimatedImagePickerProps>> = (
 
       if (androidGranted === PermissionsAndroid.RESULTS.GRANTED) {
       } else {
-        showWarning('Folder permission denied');
+        ToastAndroid.show('Folder permission denied', 500);
       }
     } catch (err) {
-      showError(err);
+      ToastAndroid.show(err.toString(), 500);
     }
-  };
+  }, []);
 
   useEffectOnce(() => {
     (async () => {
@@ -137,9 +138,9 @@ const AnimatedImagePicker: FC<PropsWithChildren<AnimatedImagePickerProps>> = (
     })();
   });
 
-  const reset = () => {
+  const reset = React.useCallback(() => {
     setSelectItemsObject({});
-  };
+  }, []);
 
   const onSelectHandle = React.useCallback(
     (image: ImagePickerResponse) => {
@@ -280,7 +281,6 @@ const AnimatedImagePicker: FC<PropsWithChildren<AnimatedImagePickerProps>> = (
           }
           primaryColor={primaryColor}
         />
-        // <></>
       );
     },
     [onSelectHandle, primaryColor, selectItemsObject]
@@ -301,6 +301,7 @@ const AnimatedImagePicker: FC<PropsWithChildren<AnimatedImagePickerProps>> = (
     endingPickImageHandle,
     isVisible,
     onSendImages,
+    reset,
     selectItemsObject,
     setVisible,
   ]);

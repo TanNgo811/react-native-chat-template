@@ -1,12 +1,23 @@
 import React, { FC, PropsWithChildren, ReactElement } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import {
+  FlatList,
+  ListRenderItem,
+  ListRenderItemInfo,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import type { StackScreenProps } from '@react-navigation/stack';
 import {
   ChatDefaultLayout,
   ChoosingUser,
   SearchBar,
+  SelectedUsers,
 } from 'react-native-chat-bar';
 import LeftArrow from '../../asserts/LeftArrow';
+import type { GlobalUser } from '../../../../lib/typescript/models/GlobalUser';
+import { RNToasty } from 'react-native-toasty';
 
 const CreateNewGroupConversation: FC<
   PropsWithChildren<CreateNewGroupConversationProps>
@@ -22,6 +33,93 @@ const CreateNewGroupConversation: FC<
   const handleGoToGroupChatDetail = React.useCallback(() => {
     navigation.navigate('GroupChatDetail');
   }, [navigation]);
+
+  const users = [
+    {
+      avatar: undefined,
+      displayName: 'abcd1',
+      rowId: 1,
+    },
+    {
+      avatar: undefined,
+      displayName: 'abcd2',
+      rowId: 2,
+    },
+    {
+      avatar: undefined,
+      displayName: 'abcd3',
+      rowId: 3,
+    },
+    {
+      avatar: undefined,
+      displayName: 'abcd4',
+      rowId: 4,
+    },
+    {
+      avatar: undefined,
+      displayName: 'abcd5',
+      rowId: 5,
+    },
+  ];
+
+  const [selectedUsers, setSelectedUsers] = React.useState<GlobalUser[]>([]);
+
+  const handleSelectUser = React.useCallback(
+    (user: GlobalUser) => {
+      let i;
+      for (i = 0; i < selectedUsers.length; i++) {
+        if (selectedUsers[i].rowId === user.rowId) {
+          RNToasty.Show({
+            title: 'This is a toast',
+            fontFamily: 'Arial',
+            position: 'center',
+          });
+          return;
+        }
+      }
+      setSelectedUsers([user, ...selectedUsers]);
+    },
+    [selectedUsers]
+  );
+
+  const handleRemoveSelectedUser = React.useCallback(
+    (user: GlobalUser) => {
+      setSelectedUsers(
+        selectedUsers.filter((item) => item.rowId !== user.rowId)
+      );
+    },
+    [selectedUsers]
+  );
+
+  const renderItem: ListRenderItem<GlobalUser> = React.useCallback(
+    ({ item, index }: ListRenderItemInfo<GlobalUser>) => {
+      return (
+        <ChoosingUser
+          API_BASE_URL={''}
+          key={index}
+          onSelectUser={() => handleSelectUser(item)}
+          user={item}
+          groupPick={true}
+        />
+      );
+    },
+    [handleSelectUser]
+  );
+
+  const renderSelectedUsers: ListRenderItem<GlobalUser> = React.useCallback(
+    ({ item, index }: ListRenderItemInfo<GlobalUser>) => {
+      return (
+        <SelectedUsers
+          key={index}
+          onPress={() => {
+            handleRemoveSelectedUser(item);
+          }}
+          username={item.displayName}
+        />
+      );
+    },
+    [handleRemoveSelectedUser]
+  );
 
   return (
     <ChatDefaultLayout
@@ -62,11 +160,33 @@ const CreateNewGroupConversation: FC<
     >
       <SearchBar isRoundedBorder={false} />
       <View style={styles.container}>
-        <Text style={{ marginVertical: 8 }}>Suggestion</Text>
+        {selectedUsers.length > 0 && (
+          <>
+            <Text style={{ marginVertical: 16 }}>Đã chọn</Text>
+            <FlatList
+              data={selectedUsers}
+              renderItem={renderSelectedUsers}
+              style={styles.flatListSelectedUsers}
+              keyExtractor={(item: GlobalUser, index: number) => {
+                return item.displayName + index.toString();
+              }}
+              numColumns={2}
+              showsVerticalScrollIndicator={false}
+            />
+          </>
+        )}
+        <Text style={{ marginVertical: 16 }}>Suggestion</Text>
 
-        <ChoosingUser groupPick={true} userName={'User 1'} />
-
-        <ChoosingUser groupPick={true} userName={'User 2'} />
+        <FlatList
+          showsVerticalScrollIndicator={false}
+          data={users}
+          keyExtractor={(item: GlobalUser, index: number) => {
+            return item.displayName + index.toString();
+          }}
+          renderItem={renderItem}
+          onEndReachedThreshold={0.5}
+          onEndReached={() => {}}
+        />
       </View>
     </ChatDefaultLayout>
   );
@@ -80,6 +200,10 @@ const styles = StyleSheet.create({
   image: {
     width: 36,
     height: 36,
+  },
+  flatListSelectedUsers: {
+    // paddingBottom: 20,
+    marginBottom: -50,
   },
 });
 

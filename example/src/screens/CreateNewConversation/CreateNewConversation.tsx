@@ -49,6 +49,7 @@ const CreateNewConversation: FC<PropsWithChildren<CreateNewConversationProps>> =
         <SearchBar isRoundedBorder={false} />
         <View style={styles.container}>
           <ChoosingOption
+            isPrimaryTitle={false}
             onPress={handleGoToCreateGroupConversation}
             title={'Create New Group'}
             icon={<GroupIcon />}
@@ -57,15 +58,21 @@ const CreateNewConversation: FC<PropsWithChildren<CreateNewConversationProps>> =
           <Text style={{ marginVertical: 8 }}>Suggestion</Text>
 
           <ChoosingUser
-            onPress={handleGoToChatDetail}
-            userName={'User 1'}
-            groupPick={false}
+            onSelectUser={handleGoToChatDetail}
+            user={{
+              avatar: undefined,
+              displayName: 'abc',
+            }}
+            API_BASE_URL={''}
           />
 
           <ChoosingUser
-            onPress={handleGoToChatDetail}
-            userName={'User 2'}
-            groupPick={false}
+            onSelectUser={handleGoToChatDetail}
+            user={{
+              avatar: undefined,
+              displayName: 'abc',
+            }}
+            API_BASE_URL={''}
           />
         </View>
       </ChatDefaultLayout>

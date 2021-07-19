@@ -5,7 +5,7 @@ import RightArrow from '../../atoms/Icons/RightArrow';
 const ChoosingOption: FC<PropsWithChildren<ChoosingOptionProps>> = (
   props: PropsWithChildren<ChoosingOptionProps>
 ): ReactElement => {
-  const { onPress, title, icon } = props;
+  const { onPress, title, icon, isPrimaryTitle } = props;
 
   return (
     <TouchableOpacity
@@ -14,13 +14,17 @@ const ChoosingOption: FC<PropsWithChildren<ChoosingOptionProps>> = (
       onPress={onPress}
     >
       <View
-        style={{
-          flexDirection: 'row',
-          alignItems: 'center',
-        }}
+        style={[
+          {
+            flexDirection: 'row',
+            alignItems: 'center',
+          },
+        ]}
       >
         {icon}
-        <Text style={{ marginLeft: 12 }}>{title}</Text>
+        <Text style={[styles.title, isPrimaryTitle && styles.textPrimary]}>
+          {title}
+        </Text>
       </View>
       <RightArrow />
     </TouchableOpacity>
@@ -40,7 +44,11 @@ const styles = StyleSheet.create({
     height: 36,
   },
 
-  title: { marginLeft: 12 },
+  title: { marginLeft: 12, fontSize: 16 },
+
+  textPrimary: {
+    color: '#BC2C3D',
+  },
 });
 
 export interface ChoosingOptionProps {
@@ -50,6 +58,8 @@ export interface ChoosingOptionProps {
   onPress?: () => void;
 
   icon: ReactElement | ReactElement[];
+
+  isPrimaryTitle: boolean;
 }
 
 ChoosingOption.defaultProps = {

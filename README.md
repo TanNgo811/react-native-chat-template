@@ -2,7 +2,7 @@
 
 ## Just first commits
 
-## NOT RECOMMEND USING THIS!
+## NOT RECOMMEND USING THIS!!! 💀💀💀
 
 React Native Chat Bar UI
 

@@ -6,6 +6,8 @@
 
 React Native Chat Bar UI
 
+To all the people still want to use this. Wish you luck tho and wait me weeks, months or years until i have enough motivation
+
 ## Installation
 
 ```sh

@@ -3,23 +3,27 @@ import buildUrl from 'build-url';
 import { API_BASE_URL, API_CONVERSATION } from '../config/api-consts';
 import { Repository } from 'react3l-common';
 import nameof from 'ts-nameof.macro';
-import type { ImagePickerResponse } from '../../../lib/typescript/types/ImageType';
 import type { AxiosError, AxiosResponse } from 'axios';
 import { map } from 'rxjs/operators';
-import type { Conversation } from '../models/Conversation';
-import type { GlobalUserFilter } from '../models/GlobalUserFilter';
-import type { GlobalUser } from '../models/GlobalUser';
+
 import type { Observable } from 'rxjs';
-import type { ConversationType } from '../models/ConversationType';
-import type { ConversationFile } from '../models/ConversationFile';
-import type { ConversationFilter } from '../models/ConversationFilter';
+
 import { fileURICleaner } from '../helpers/file';
 import { PLATFORM_IS_IOS } from '../config/consts';
 import { getFileName } from '../helpers/get-file-name';
 // @ts-ignore
 import kebabCase from 'lodash/kebabCase';
-import type { ConversationTypeFilter } from '../models/ConversationTypeFilter';
-import type { ConversationMessageFilter } from '../models/ConversationMessageFilter';
+import type {
+  Conversation,
+  ConversationFile,
+  ConversationFilter,
+  ConversationMessageFilter,
+  ConversationType,
+  ConversationTypeFilter,
+  GlobalUser,
+  GlobalUserFilter,
+  ImagePickerResponse,
+} from 'react-native-chat-bar';
 
 export class ConversationRepository extends Repository {
   constructor() {

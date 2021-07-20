@@ -8,8 +8,8 @@ import React, { FC, PropsWithChildren, ReactElement } from 'react';
 import type { ImageStyle } from 'react-native';
 import { Image, StyleProp } from 'react-native';
 
-const ImageChat: FC<PropsWithChildren<ImageChatProps>> = (
-  props: PropsWithChildren<ImageChatProps>
+const ImageConversation: FC<PropsWithChildren<ImageConversationProps>> = (
+  props: PropsWithChildren<ImageConversationProps>
 ): ReactElement => {
   const { imageSource, style, isAvatar, secondSource, API_BASE_URL } = props;
 
@@ -33,7 +33,7 @@ const ImageChat: FC<PropsWithChildren<ImageChatProps>> = (
   );
 };
 
-export interface ImageChatProps {
+export interface ImageConversationProps {
   //
   imageSource: string | undefined;
 
@@ -46,15 +46,15 @@ export interface ImageChatProps {
   API_BASE_URL?: string;
 }
 
-ImageChat.defaultProps = {
+ImageConversation.defaultProps = {
   //
   isAvatar: true,
 
   secondSource: undefined,
 };
 
-ImageChat.propTypes = {
+ImageConversation.propTypes = {
   //
 };
 
-export default React.memo(ImageChat);
+export default React.memo(ImageConversation);

@@ -11,6 +11,7 @@ import {
 import type { StackScreenProps } from '@react-navigation/stack';
 import {
   ChatDefaultLayout,
+  Conversation,
   ConversationItem,
   conversationService,
   SearchBar,
@@ -18,7 +19,6 @@ import {
 } from 'react-native-chat-bar';
 import PlusIcon from '../../asserts/PlusIcon';
 import { conversationRepository } from '../../repository/conversation-repository';
-import type { Conversation } from '../../models/Conversation';
 import type { GlobalState } from '../../app/global-state';
 import { globalStateRepository } from '../../repository/global-state-repository';
 import { API_BASE_URL, API_SIGNALR_ROUTE } from '../../config/api-consts';
@@ -73,6 +73,44 @@ const ChatList: FC<PropsWithChildren<ChatListProps>> = (
     [navigation]
   );
 
+  const [currentGlobalUser] = React.useGlobal<GlobalState, 'globalUser'>(
+    'globalUser'
+  );
+
+  const [, , , handleDeleteConversation, ,] =
+    conversationService.useConversation(
+      currentGlobalUser,
+      conversationRepository.create,
+      conversationRepository.get,
+      conversationRepository.delete,
+      conversationRepository.update
+    );
+
+  const [totalConversation, setTotalConversation] = React.useState<
+    Conversation[]
+  >([]);
+
+  React.useEffect(() => {
+    setTotalConversation(listConversation);
+  }, [listConversation]);
+
+  const handleDeleteConversationComponent = React.useCallback(
+    (conversation: Conversation) => {
+      setTotalConversation(
+        totalConversation.filter((item) => item.id !== conversation.id)
+      );
+    },
+    [totalConversation]
+  );
+
+  const handleDelete = React.useCallback(
+    async (conversation: Conversation) => {
+      await handleDeleteConversationComponent(conversation);
+      await handleDeleteConversation(conversation);
+    },
+    [handleDeleteConversation, handleDeleteConversationComponent]
+  );
+
   const renderItem: ListRenderItem<Conversation> = React.useCallback(
     ({ item }: ListRenderItemInfo<Conversation>) => (
       <ConversationItem
@@ -82,11 +120,11 @@ const ChatList: FC<PropsWithChildren<ChatListProps>> = (
           handleGoToChatDetail(item);
         }}
         onDeleteConversation={async () => {
-          // await handleDelete(item);
+          await handleDelete(item);
         }}
       />
     ),
-    [handleGoToChatDetail]
+    [handleDelete, handleGoToChatDetail]
   );
 
   return (
@@ -116,7 +154,7 @@ const ChatList: FC<PropsWithChildren<ChatListProps>> = (
 
           <FlatList
             renderItem={renderItem}
-            data={listConversation}
+            data={totalConversation}
             onRefresh={handRefresh}
             refreshing={refreshing}
             showsVerticalScrollIndicator={false}

@@ -16,7 +16,10 @@ import ChoosingUser from '../../morecules/ChoosingUser/ChoosingUser';
 import Modal from 'react-native-modal';
 import SearchBar from '../../morecules/SearchBar/SearchBar';
 import type { Conversation } from '../../../models/Conversation';
-import GraySearchIcon from '../../atoms/Icons/GraySearchIcon';
+import GraySearchIcon from '../../Icons/GraySearchIcon';
+import { conversationService } from '../../../services/chat-service/conversation-service';
+import type { GlobalUserFilter } from '../../../models';
+import type { Observable } from 'rxjs';
 
 const AddNewParticipantsModal: FC<
   PropsWithChildren<AddNewParticipantsModalProps>
@@ -26,12 +29,12 @@ const AddNewParticipantsModal: FC<
     isVisible,
     onBackdropPress,
     onAddNewParticipants,
-    keyExtractor,
-    END_REACHED_THRESHOLD,
+    singleListGlobalUserRepository,
+    API_BASE_URL,
   } = props;
 
   const [listUser, refreshListUser, , loadingListUser, searchUser] =
-    chatService.useListGlobalUser();
+    conversationService.useListGlobalUser(singleListGlobalUserRepository);
 
   const [selectedUsers, setSelectedUsers] = React.useState<GlobalUser[]>([]);
 
@@ -44,9 +47,9 @@ const AddNewParticipantsModal: FC<
           return;
         }
       }
-      for (j = 0; j < conversation.conversationParticipants.length; j++) {
+      for (j = 0; j < conversation?.conversationParticipants?.length; j++) {
         if (
-          conversation.conversationParticipants[j].globalUser.rowId ===
+          conversation?.conversationParticipants[j]?.globalUser?.rowId ===
           user.rowId
         ) {
           ToastAndroid.show('Đã có trong nhóm', 250);
@@ -75,10 +78,11 @@ const AddNewParticipantsModal: FC<
           onSelectUser={() => handleSelectUser(item)}
           user={item}
           groupPick={true}
+          API_BASE_URL={API_BASE_URL}
         />
       );
     },
-    [handleSelectUser]
+    [API_BASE_URL, handleSelectUser]
   );
 
   const renderSelectedUsers: ListRenderItem<GlobalUser> = React.useCallback(
@@ -89,7 +93,7 @@ const AddNewParticipantsModal: FC<
           onPress={() => {
             handleRemoveSelectedUser(item);
           }}
-          username={item.displayName}
+          username={item?.displayName}
         />
       );
     },
@@ -127,9 +131,11 @@ const AddNewParticipantsModal: FC<
               showsVerticalScrollIndicator={false}
               style={styles.flatListUsers}
               data={listUser}
-              keyExtractor={keyExtractor}
+              keyExtractor={(item: GlobalUser, index: number) =>
+                item?.id?.toString() + index.toString()
+              }
               renderItem={renderItem}
-              onEndReachedThreshold={END_REACHED_THRESHOLD}
+              onEndReachedThreshold={0.5}
               refreshing={loadingListUser}
               onRefresh={refreshListUser}
             />
@@ -243,9 +249,11 @@ export interface AddNewParticipantsModalProps {
 
   onAddNewParticipants: (users: GlobalUser[]) => void;
 
-  keyExtractor: (item: GlobalUser, index: number) => string;
+  singleListGlobalUserRepository: (
+    filter: GlobalUserFilter
+  ) => Observable<GlobalUser[]>;
 
-  END_REACHED_THRESHOLD: any;
+  API_BASE_URL: string;
 }
 
 AddNewParticipantsModal.defaultProps = {

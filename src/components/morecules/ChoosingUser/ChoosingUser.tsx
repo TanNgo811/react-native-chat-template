@@ -2,16 +2,33 @@ import React, { FC, PropsWithChildren, ReactElement } from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import type { GlobalUser } from '../../../models/GlobalUser';
 import type { StackScreenProps } from '@react-navigation/stack';
+import { conversationService } from '../../../services/chat-service/conversation-service';
+import type { Conversation } from '../../../models';
+import type { Observable } from 'rxjs';
 
 const ChoosingUser: FC<PropsWithChildren<ChoosingUsersProps>> = (
   props: PropsWithChildren<ChoosingUsersProps>
 ): ReactElement => {
-  const { user, groupPick, navigation, onSelectUser, API_BASE_URL } = props;
+  const {
+    user,
+    groupPick,
+    navigation,
+    onSelectUser,
+    API_BASE_URL,
+    currentGlobalUser,
+    createConversationRepository,
+    chatDetailScreen,
+  } = props;
 
   const [isChecked, setCheck] = React.useState(false);
 
-  // const [handleCreateNewConversation] =
-  //   chatService.useCreateNewConversation(navigation);
+  const [handleCreateNewConversation] =
+    conversationService.useCreateNewConversation(
+      currentGlobalUser,
+      navigation,
+      createConversationRepository,
+      chatDetailScreen
+    );
 
   const handleToggleCheck = React.useCallback(() => {
     setCheck(!isChecked);
@@ -22,8 +39,8 @@ const ChoosingUser: FC<PropsWithChildren<ChoosingUsersProps>> = (
   }, [handleToggleCheck]);
 
   const handlePressed = React.useCallback(async () => {
-    // await handleCreateNewConversation(user);
-  }, []);
+    await handleCreateNewConversation(user);
+  }, [handleCreateNewConversation, user]);
 
   return (
     <TouchableOpacity
@@ -87,6 +104,14 @@ export interface ChoosingUsersProps {
   navigation?: StackScreenProps<any>['navigation'];
 
   API_BASE_URL: string;
+
+  currentGlobalUser?: GlobalUser;
+
+  createConversationRepository?: (
+    conversation: Conversation
+  ) => Observable<Conversation>;
+
+  chatDetailScreen?: string;
 }
 
 ChoosingUser.defaultProps = {

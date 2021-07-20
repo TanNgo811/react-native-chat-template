@@ -7,7 +7,7 @@ import {
   View,
   ViewStyle,
 } from 'react-native';
-import X_Icon from '../../atoms/Icons/X_Icon';
+import X_Icon from '../../Icons/X_Icon';
 
 /**
  * File: SelectedUsers.tsx
@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
 
 export interface SelectedUsersProps {
   //
-  username: string;
+  username?: string;
 
   onPress?: () => void;
 

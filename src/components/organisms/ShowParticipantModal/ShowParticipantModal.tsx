@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import type { ConversationParticipant } from '../../../models/ConversationParticipant';
 import Modal from 'react-native-modal';
-import ImageConversation from '../../atoms/ImageConversation/ImageConversation';
+import ImageConversation from '../../morecules/ImageConversation/ImageConversation';
 
 const ShowParticipantModal: FC<PropsWithChildren<ShowParticipantModalProps>> = (
   props: PropsWithChildren<ShowParticipantModalProps>
@@ -131,7 +131,7 @@ export interface ShowParticipantModalProps {
 
   onBackdropPress?: () => void;
 
-  users: ConversationParticipant[];
+  users?: ConversationParticipant[];
 
   API_BASE_URL: string;
 }

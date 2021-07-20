@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import LeftBack from '../../atoms/Icons/LeftBack';
+import LeftBack from '../../Icons/LeftBack';
 
 const ratio = 86 / 375;
 const HeaderSearch: FC<PropsWithChildren<HeaderSearchProps>> = (

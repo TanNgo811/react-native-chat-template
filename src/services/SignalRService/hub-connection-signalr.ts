@@ -51,6 +51,8 @@ export async function hubConnectionSignalr(
               updatedAt: moment(new Date()),
             };
 
+            console.log(comingMessage);
+
             await addNewConversationGlobalState(comingMessage);
           }
         );

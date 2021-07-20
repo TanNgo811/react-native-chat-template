@@ -1,24 +1,60 @@
-import React, { FC, PropsWithChildren, ReactElement } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import React from 'reactn';
+import type { FC, PropsWithChildren, ReactElement } from 'react';
+import {
+  FlatList,
+  ListRenderItem,
+  ListRenderItemInfo,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import type { StackScreenProps } from '@react-navigation/stack';
 import {
   ChatDefaultLayout,
   ChoosingOption,
   ChoosingUser,
+  conversationService,
+  GlobalUser,
   SearchBar,
 } from 'react-native-chat-bar';
 import GroupIcon from '../../asserts/GroupIcon';
+import { API_BASE_URL } from '../../config/api-consts';
+import { conversationRepository } from '../../repository/conversation-repository';
+import type { GlobalState } from '../../app/global-state';
 
 const CreateNewConversation: FC<PropsWithChildren<CreateNewConversationProps>> =
   (props: PropsWithChildren<CreateNewConversationProps>): ReactElement => {
     const { navigation, route } = props;
 
+    const [listUser, refreshListUser, , loadingListUser, searchUser] =
+      conversationService.useListGlobalUser(
+        conversationRepository.singleListGlobalUser
+      );
+
+    const [currentUser] = React.useGlobal<GlobalState, 'globalUser'>(
+      'globalUser'
+    );
+
+    const renderItem: ListRenderItem<GlobalUser> = React.useCallback(
+      ({ item, index }: ListRenderItemInfo<GlobalUser>) => {
+        return (
+          <ChoosingUser
+            key={index}
+            user={item}
+            navigation={navigation}
+            API_BASE_URL={API_BASE_URL}
+            currentGlobalUser={currentUser}
+            chatDetailScreen={'ChatDetail'}
+            createConversationRepository={conversationRepository.create}
+          />
+        );
+      },
+      [currentUser, navigation]
+    );
+
     const handleGoToChatList = React.useCallback(() => {
       navigation.navigate('ChatList');
-    }, [navigation]);
-
-    const handleGoToChatDetail = React.useCallback(() => {
-      navigation.navigate('ChatDetail');
     }, [navigation]);
 
     const handleGoToCreateGroupConversation = React.useCallback(() => {
@@ -46,7 +82,7 @@ const CreateNewConversation: FC<PropsWithChildren<CreateNewConversationProps>> =
         headerContainerColor={'white'}
         headerTitleColor={'#200E32'}
       >
-        <SearchBar isRoundedBorder={false} />
+        <SearchBar isRoundedBorder={false} onChangeText={searchUser} />
         <View style={styles.container}>
           <ChoosingOption
             isPrimaryTitle={false}
@@ -57,22 +93,17 @@ const CreateNewConversation: FC<PropsWithChildren<CreateNewConversationProps>> =
 
           <Text style={{ marginVertical: 8 }}>Suggestion</Text>
 
-          <ChoosingUser
-            onSelectUser={handleGoToChatDetail}
-            user={{
-              avatar: undefined,
-              displayName: 'abc',
-            }}
-            API_BASE_URL={''}
-          />
-
-          <ChoosingUser
-            onSelectUser={handleGoToChatDetail}
-            user={{
-              avatar: undefined,
-              displayName: 'abc',
-            }}
-            API_BASE_URL={''}
+          <FlatList
+            showsVerticalScrollIndicator={false}
+            data={listUser}
+            keyExtractor={(item, index) =>
+              item?.id?.toString() + index.toString()
+            }
+            renderItem={renderItem}
+            onEndReachedThreshold={0.5}
+            onEndReached={() => {}}
+            refreshing={loadingListUser}
+            onRefresh={refreshListUser}
           />
         </View>
       </ChatDefaultLayout>

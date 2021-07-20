@@ -255,6 +255,15 @@ PODS:
     - React-Core
   - RNGestureHandler (1.10.3):
     - React-Core
+  - RNImageCropPicker (0.36.2):
+    - React-Core
+    - React-RCTImage
+    - RNImageCropPicker/QBImagePickerController (= 0.36.2)
+    - TOCropViewController
+  - RNImageCropPicker/QBImagePickerController (0.36.2):
+    - React-Core
+    - React-RCTImage
+    - TOCropViewController
   - RNReanimated (2.2.0):
     - DoubleConversion
     - FBLazyVector
@@ -293,6 +302,7 @@ PODS:
     - React
     - Toast (~> 4.0.0)
   - Toast (4.0.0)
+  - TOCropViewController (2.6.0)
   - Yoga (1.14.0)
 
 DEPENDENCIES:
@@ -328,6 +338,7 @@ DEPENDENCIES:
   - "RNCMaskedView (from `../node_modules/@react-native-community/masked-view`)"
   - RNDeviceInfo (from `../node_modules/react-native-device-info`)
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
+  - RNImageCropPicker (from `../node_modules/react-native-image-crop-picker`)
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
   - RNSVG (from `../node_modules/react-native-svg`)
@@ -338,6 +349,7 @@ SPEC REPOS:
   trunk:
     - boost-for-react-native
     - Toast
+    - TOCropViewController
 
 EXTERNAL SOURCES:
   DoubleConversion:
@@ -400,6 +412,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-device-info"
   RNGestureHandler:
     :path: "../node_modules/react-native-gesture-handler"
+  RNImageCropPicker:
+    :path: "../node_modules/react-native-image-crop-picker"
   RNReanimated:
     :path: "../node_modules/react-native-reanimated"
   RNScreens:
@@ -443,11 +457,13 @@ SPEC CHECKSUMS:
   RNCMaskedView: 0e1bc4bfa8365eba5fbbb71e07fbdc0555249489
   RNDeviceInfo: 8d3a29207835f972bce883723882980143270d55
   RNGestureHandler: a479ebd5ed4221a810967000735517df0d2db211
+  RNImageCropPicker: 35a3ceb837446fa11547704709bb22b5fac6d584
   RNReanimated: d9da990fc90123f4ffbfdda93d00fc15174863a8
   RNScreens: 21b73c94c9117e1110a79ee0ee80c93ccefed8ce
   RNSVG: 551acb6562324b1d52a4e0758f7ca0ec234e278f
   RNToasty: 7e83e74086ac39913662ceaba36de22631c8eaa4
   Toast: 91b396c56ee72a5790816f40d3a94dd357abc196
+  TOCropViewController: 3105367e808b7d3d886a74ff59bf4804e7d3ab38
   Yoga: 4bd86afe9883422a7c4028c00e34790f560923d6
 
 PODFILE CHECKSUM: 6f4f7abb23bdb2c0566648de1af919e8dade9013

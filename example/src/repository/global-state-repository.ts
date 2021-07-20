@@ -1,9 +1,10 @@
+import type {
+  AppUser,
+  ConversationMessage,
+  GlobalUser,
+} from 'react-native-chat-bar';
 import React from 'reactn';
 
-import type { GlobalUser } from 'src/models/GlobalUser';
-import type { ConversationMessage } from 'src/models/ConversationMessage';
-
-import type { AppUser } from '../models/AppUser';
 import { GlobalState } from '../app/global-state';
 
 export class GlobalStateRepository {

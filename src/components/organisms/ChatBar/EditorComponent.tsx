@@ -6,8 +6,8 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import PhotoSquareOutline from '../../atoms/Icons/PhotoSquareOutline';
-import ArrowForward from '../../atoms/Icons/ArrowForward';
+import PhotoSquareOutline from '../../Icons/PhotoSquareOutline';
+import ArrowForward from '../../Icons/ArrowForward';
 
 const EditorComponent: FC<PropsWithChildren<EditorComponentProps>> = (
   props: PropsWithChildren<EditorComponentProps>

@@ -9,6 +9,7 @@ import { ConversationFilter } from '../../models/ConversationFilter';
 import type { Conversation } from '../../models/Conversation';
 import type { GlobalUser } from '../../models/GlobalUser';
 import moment from 'moment';
+import { RNToasty } from 'react-native-toasty';
 
 export const messageConversationServices = {
   useListMessages(
@@ -112,7 +113,7 @@ export const messageConversationServices = {
             setCurrentMessage(message);
           },
           () => {
-            console.log('errors.cannotCreateMessage');
+            RNToasty.Show({ title: 'Can not create message' });
           }
         );
         return function cleanup() {
@@ -152,7 +153,7 @@ export const messageConversationServices = {
             setCurrentMessage(message);
           },
           () => {
-            console.log('errors.cannotCreateMessage');
+            RNToasty.Show({ title: 'Can not get message' });
           }
         );
         return function cleanup() {
@@ -169,7 +170,7 @@ export const messageConversationServices = {
         }).subscribe(
           () => {},
           () => {
-            console.log('errors.cannotCreateMessage');
+            RNToasty.Show({ title: 'Can not delete message' });
           }
         );
         return function cleanup() {
@@ -187,7 +188,7 @@ export const messageConversationServices = {
         }).subscribe(
           () => {},
           () => {
-            console.log('errors.cannotCreateMessage');
+            RNToasty.Show({ title: 'Can not update message' });
           }
         );
         return function cleanup() {

@@ -7,27 +7,15 @@ import {
 } from 'react-native';
 import EditorComponent from './EditorComponent';
 import AnimatedImagePicker from './AnimatedImagePicker';
-import type { ImagePickerResponse } from '../../../types/ImageType';
+import type { ImagePickerResponse } from '../../../models/ImageType';
 
 const ChatBar: FC<PropsWithChildren<ChatBarProps>> = (
   props: PropsWithChildren<ChatBarProps>
 ): ReactElement => {
-  const {
-    primaryColor,
-    onSendMessage,
-    setPickedImages,
-    onSendImages,
-    ...restProps
-  } = props;
+  const { primaryColor, onSendMessage, handleChooseImage, ...restProps } =
+    props;
 
   const [isVisible, setVisible] = React.useState<boolean>(false);
-
-  const handleChooseImage = React.useCallback(
-    async (img: ImagePickerResponse[]) => {
-      await setPickedImages(img);
-    },
-    [setPickedImages]
-  );
 
   const handleCloseModal = React.useCallback(() => {
     setVisible(false);
@@ -56,7 +44,6 @@ const ChatBar: FC<PropsWithChildren<ChatBarProps>> = (
           onCancel={handleCloseModal}
           endingPickImageHandle={handleChooseImage}
           setVisible={setVisible}
-          onSendImages={onSendImages}
         />
       </KeyboardAvoidingView>
     </>
@@ -65,11 +52,9 @@ const ChatBar: FC<PropsWithChildren<ChatBarProps>> = (
 
 export interface ChatBarProps extends TextInputProps {
   //
-  onSendImages: () => void;
-
   imagesChose?: ImagePickerResponse[];
 
-  setPickedImages: (images: ImagePickerResponse[]) => void;
+  handleChooseImage: (images: ImagePickerResponse[]) => void;
 
   primaryColor?: string;
 

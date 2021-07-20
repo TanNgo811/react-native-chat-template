@@ -1,6 +1,6 @@
 import React, { FC, PropsWithChildren, ReactElement } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import RightArrow from '../../atoms/Icons/RightArrow';
+import RightArrow from '../../Icons/RightArrow';
 
 const ChoosingOption: FC<PropsWithChildren<ChoosingOptionProps>> = (
   props: PropsWithChildren<ChoosingOptionProps>
@@ -59,7 +59,7 @@ export interface ChoosingOptionProps {
 
   icon: ReactElement | ReactElement[];
 
-  isPrimaryTitle: boolean;
+  isPrimaryTitle?: boolean;
 }
 
 ChoosingOption.defaultProps = {

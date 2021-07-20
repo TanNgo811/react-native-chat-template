@@ -17,7 +17,7 @@ const LoginScreen: FC<PropsWithChildren<LoginScreenProps>> = (
 
   const handleLogin = React.useCallback(() => {
     const subscription: Subscription = accountRepository
-      .login({ username: 'ln', password: '123' })
+      .login({ username: 'administrator', password: '123@qq' })
       .subscribe(
         (user) => {
           globalStateRepository.saveCredentials(user);
@@ -41,7 +41,6 @@ const LoginScreen: FC<PropsWithChildren<LoginScreenProps>> = (
         title={'Login'}
         navigation={navigation}
         route={route}
-        left={'back-button'}
         rightType={'icon'}
         right={<View />}
       >
@@ -56,6 +55,9 @@ const LoginScreen: FC<PropsWithChildren<LoginScreenProps>> = (
 const styles = StyleSheet.create({
   container: {
     paddingHorizontal: 16,
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });
 

@@ -18,8 +18,8 @@ import {
 import CameraRoll from '@react-native-community/cameraroll';
 import useEffectOnce from 'react-use/lib/useEffectOnce';
 // import { showError, showWarning } from '../../../helper/Toast';
-import CloseIcon from '../../atoms/Icons/CloseIcon';
-import type { ImagePickerResponse } from '../../../types/ImageType';
+import CloseIcon from '../../Icons/CloseIcon';
+import type { ImagePickerResponse } from '../../../models/ImageType';
 import SendImageButton from './SendImageButton';
 import ImageItem from './ImageItem';
 
@@ -49,7 +49,6 @@ const AnimatedImagePicker: FC<PropsWithChildren<AnimatedImagePickerProps>> = (
     primaryColor,
     textSendImage,
     headerImagePicker,
-    onSendImages,
   } = props;
 
   const [images, setImages] = React.useState<ImagePickerResponse[]>([]);
@@ -295,12 +294,10 @@ const AnimatedImagePicker: FC<PropsWithChildren<AnimatedImagePickerProps>> = (
     decreaseHeightView();
     reset();
     setVisible(!isVisible);
-    onSendImages();
   }, [
     decreaseHeightView,
     endingPickImageHandle,
     isVisible,
-    onSendImages,
     reset,
     selectItemsObject,
     setVisible,
@@ -424,7 +421,6 @@ const styles = StyleSheet.create({
 
 export interface AnimatedImagePickerProps {
   //
-  onSendImages: () => void;
 
   headerImagePicker?: string;
 

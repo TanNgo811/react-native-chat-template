@@ -33,7 +33,7 @@ const ConversationItem: FC<PropsWithChildren<ConversationItemProps>> = (
         <Animated.Text
           style={[{ transform: [{ scale: scale }] }, styles.textDelete]}
         >
-          Delete
+          Xóa
         </Animated.Text>
       </TouchableOpacity>
     );

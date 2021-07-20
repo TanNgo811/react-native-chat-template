@@ -3,9 +3,9 @@ import { httpConfig } from '../config/repository';
 import buildUrl from 'build-url';
 import type { AxiosResponse } from 'axios';
 import { map } from 'rxjs/operators';
-import type { AppUser } from '../models/AppUser';
 import type { Observable } from 'rxjs';
 import { API_ACCOUNT_ROUTE, API_BASE_URL } from '../config/api-consts';
+import type { AppUser } from 'react-native-chat-bar';
 // @ts-ignore
 import kebabCase from 'lodash/kebabCase';
 import nameof from 'ts-nameof.macro';

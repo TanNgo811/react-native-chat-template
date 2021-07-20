@@ -5,11 +5,13 @@ import { API_BASE_URL, API_CONVERSATION_MESSAGE } from '../config/api-consts';
 import nameof from 'ts-nameof.macro';
 import type { AxiosResponse } from 'axios';
 import { map } from 'rxjs/operators';
-import type { ConversationMessageFilter } from '../models/ConversationMessageFilter';
 import type { Observable } from 'rxjs';
-import type { ConversationMessage } from '../models/ConversationMessage';
 // @ts-ignore
 import kebabCase from 'lodash/kebabCase';
+import type {
+  ConversationMessage,
+  ConversationMessageFilter,
+} from 'react-native-chat-bar';
 
 export class MessageConversationRepository extends Repository {
   constructor() {

@@ -6,17 +6,18 @@ import {
   ChatBar,
   ChatDefaultLayout,
   ConversationDetail,
+  ConversationMessage,
+  ConversationMessageFilter,
+  ConversationParticipant,
+  ImagePickerResponse,
   messageConversationServices,
   signalRService,
 } from 'react-native-chat-bar';
 import InformationIcon from '../../asserts/InformationIcon';
 import { messageConversationRepository } from '../../repository/message-conversation-repository';
-import type { ConversationMessage } from '../../models/ConversationMessage';
 import type { GlobalState } from '../../app/global-state';
-
-import { ConversationMessageFilter } from '../../models/ConversationMessageFilter';
 import { ACTION_RESET_FILTER, ListAction } from 'react-native-chat-bar';
-import type { ConversationParticipant } from '../../models/ConversationParticipant';
+import { conversationRepository } from '../../repository/conversation-repository';
 
 const ChatDetail: FC<PropsWithChildren<ChatDetailProps>> = (
   props: PropsWithChildren<ChatDetailProps>
@@ -44,8 +45,6 @@ const ChatDetail: FC<PropsWithChildren<ChatDetailProps>> = (
   const [comingMessage] = React.useGlobal<GlobalState, 'comingMessage'>(
     'comingMessage'
   );
-
-  const [currentUser] = React.useGlobal<GlobalState, 'user'>('user');
 
   const [prepMessage] = messageConversationServices.usePrevious(comingMessage);
 
@@ -118,6 +117,34 @@ const ChatDetail: FC<PropsWithChildren<ChatDetailProps>> = (
     }
   }, [conversation?.id, currentGlobalUser?.id, handleChangeText, text]);
 
+  const handleChooseImage = React.useCallback(
+    async (images: ImagePickerResponse[]) => {
+      await conversationRepository
+        .multiUploadFile(images)
+        .then((results) => {
+          //
+          signalRService.send(
+            conversation?.id,
+            currentGlobalUser?.id,
+            JSON.stringify({
+              message: null,
+              imagePath: results.map((result) => result.path),
+              filePath: null,
+            })
+          );
+        })
+        .catch((e) => console.log(e));
+    },
+    [conversation, currentGlobalUser]
+  );
+
+  const handleDeleteMessageComponent = React.useCallback(
+    (message: ConversationMessage) => {
+      setTotalMessages(totalMessages.filter((item) => item.id !== message.id));
+    },
+    [totalMessages]
+  );
+
   return (
     <ChatDefaultLayout
       route={route}
@@ -145,14 +172,14 @@ const ChatDetail: FC<PropsWithChildren<ChatDetailProps>> = (
         <ConversationDetail
           listAnswer={totalMessages}
           currentGlobalUser={currentGlobalUser}
+          onDeleteMessage={handleDeleteMessageComponent}
         />
       </View>
       <ChatBar
-        setPickedImages={() => {}}
         placeholder={'Lets talk!'}
-        onSendImages={() => {}}
         onChangeText={handleChangeText}
         onSendMessage={handleSendText}
+        handleChooseImage={handleChooseImage}
       />
     </ChatDefaultLayout>
   );

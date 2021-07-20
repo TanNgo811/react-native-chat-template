@@ -9,7 +9,8 @@ import type { Observable, Subscription } from 'rxjs';
 import type { GlobalUserFilter } from '../../models/GlobalUserFilter';
 import type { StackScreenProps } from '@react-navigation/stack';
 import type { ConversationParticipant } from '../../models/ConversationParticipant';
-import type { AppUser } from '../../types/AppUser';
+import type { AppUser } from '../../models';
+import { RNToasty } from 'react-native-toasty';
 
 const DEFAULT_TAKE = 10;
 
@@ -95,7 +96,7 @@ export const conversationService = {
             setLoading(false);
           },
           () => {
-            console.log('errors.cannotGetListGlobalUser');
+            RNToasty.Show({ title: 'Can not get List Global User' });
           }
         );
       return function cleanup() {
@@ -117,7 +118,7 @@ export const conversationService = {
             setLoading(false);
           },
           () => {
-            console.log('errors.cannotGetListGlobalUser');
+            RNToasty.Show({ title: 'Can not load more List Global User' });
           }
         );
       return function cleanup() {
@@ -136,7 +137,7 @@ export const conversationService = {
             setLoading(false);
           },
           () => {
-            console.log('errors.cannotGetListGlobalUser');
+            RNToasty.Show({ title: 'Can not refresh List Global User' });
           }
         );
       return function cleanup() {
@@ -159,7 +160,7 @@ export const conversationService = {
               setLoading(false);
             },
             () => {
-              console.log('errors.cannotGetListGlobalUser');
+              RNToasty.Show({ title: 'Can not search list Global User' });
             }
           );
         return function cleanup() {

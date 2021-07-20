@@ -1,7 +1,7 @@
 import React, { FC, PropsWithChildren, ReactElement } from 'react';
 import HeaderIconButton from '../HeaderIconButton/HeaderIconButton';
 import type { StackScreenProps } from '@react-navigation/stack';
-import LeftBack from '../Icons/LeftBack';
+import LeftBack from '../../Icons/LeftBack';
 
 const HeaderBackButton: FC<PropsWithChildren<HeaderBackButtonProps>> = (
   props: PropsWithChildren<HeaderBackButtonProps>

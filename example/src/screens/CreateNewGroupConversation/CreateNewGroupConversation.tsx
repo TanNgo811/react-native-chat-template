@@ -1,4 +1,5 @@
-import React, { FC, PropsWithChildren, ReactElement } from 'react';
+import React from 'reactn';
+import type { FC, PropsWithChildren, ReactElement } from 'react';
 import {
   FlatList,
   ListRenderItem,
@@ -12,12 +13,16 @@ import type { StackScreenProps } from '@react-navigation/stack';
 import {
   ChatDefaultLayout,
   ChoosingUser,
+  conversationService,
+  GlobalUser,
   SearchBar,
   SelectedUsers,
 } from 'react-native-chat-bar';
 import LeftArrow from '../../asserts/LeftArrow';
-import type { GlobalUser } from '../../../../lib/typescript/models/GlobalUser';
 import { RNToasty } from 'react-native-toasty';
+import { conversationRepository } from '../../repository/conversation-repository';
+import type { GlobalState } from '../../app/global-state';
+import { API_BASE_URL } from '../../config/api-consts';
 
 const CreateNewGroupConversation: FC<
   PropsWithChildren<CreateNewGroupConversationProps>
@@ -26,41 +31,26 @@ const CreateNewGroupConversation: FC<
 ): ReactElement => {
   const { navigation, route } = props;
 
+  const [currentUser] = React.useGlobal<GlobalState, 'globalUser'>(
+    'globalUser'
+  );
+
+  const [listUser, refreshListUser, , loadingListUser, searchUser] =
+    conversationService.useListGlobalUser(
+      conversationRepository.singleListGlobalUser
+    );
+
+  const [, handleCreateNewGroupConversation] =
+    conversationService.useCreateNewConversation(
+      currentUser,
+      navigation,
+      conversationRepository.create,
+      'ChatDetail'
+    );
+
   const handleGoBack = React.useCallback(() => {
     navigation.goBack();
   }, [navigation]);
-
-  const handleGoToGroupChatDetail = React.useCallback(() => {
-    navigation.navigate('GroupChatDetail');
-  }, [navigation]);
-
-  const users = [
-    {
-      avatar: undefined,
-      displayName: 'abcd1',
-      rowId: 1,
-    },
-    {
-      avatar: undefined,
-      displayName: 'abcd2',
-      rowId: 2,
-    },
-    {
-      avatar: undefined,
-      displayName: 'abcd3',
-      rowId: 3,
-    },
-    {
-      avatar: undefined,
-      displayName: 'abcd4',
-      rowId: 4,
-    },
-    {
-      avatar: undefined,
-      displayName: 'abcd5',
-      rowId: 5,
-    },
-  ];
 
   const [selectedUsers, setSelectedUsers] = React.useState<GlobalUser[]>([]);
 
@@ -70,9 +60,7 @@ const CreateNewGroupConversation: FC<
       for (i = 0; i < selectedUsers.length; i++) {
         if (selectedUsers[i].rowId === user.rowId) {
           RNToasty.Show({
-            title: 'This is a toast',
-            fontFamily: 'Arial',
-            position: 'center',
+            title: 'Bạn đã chọn người dùng này',
           });
           return;
         }
@@ -95,7 +83,7 @@ const CreateNewGroupConversation: FC<
     ({ item, index }: ListRenderItemInfo<GlobalUser>) => {
       return (
         <ChoosingUser
-          API_BASE_URL={''}
+          API_BASE_URL={API_BASE_URL}
           key={index}
           onSelectUser={() => handleSelectUser(item)}
           user={item}
@@ -145,7 +133,12 @@ const CreateNewGroupConversation: FC<
       }
       rightType={'other'}
       right={
-        <TouchableOpacity activeOpacity={1} onPress={handleGoToGroupChatDetail}>
+        <TouchableOpacity
+          activeOpacity={1}
+          onPress={() => {
+            handleCreateNewGroupConversation(selectedUsers);
+          }}
+        >
           <Text
             style={{
               color: '#415EB6',
@@ -158,7 +151,7 @@ const CreateNewGroupConversation: FC<
       headerContainerColor={'white'}
       headerTitleColor={'#200E32'}
     >
-      <SearchBar isRoundedBorder={false} />
+      <SearchBar isRoundedBorder={false} onChangeText={searchUser} />
       <View style={styles.container}>
         {selectedUsers.length > 0 && (
           <>
@@ -179,13 +172,15 @@ const CreateNewGroupConversation: FC<
 
         <FlatList
           showsVerticalScrollIndicator={false}
-          data={users}
-          keyExtractor={(item: GlobalUser, index: number) => {
-            return item.displayName + index.toString();
-          }}
+          data={listUser}
+          keyExtractor={(item, index) =>
+            item?.id?.toString() + index.toString()
+          }
           renderItem={renderItem}
           onEndReachedThreshold={0.5}
           onEndReached={() => {}}
+          refreshing={loadingListUser}
+          onRefresh={refreshListUser}
         />
       </View>
     </ChatDefaultLayout>
@@ -202,8 +197,8 @@ const styles = StyleSheet.create({
     height: 36,
   },
   flatListSelectedUsers: {
-    // paddingBottom: 20,
-    marginBottom: -50,
+    paddingBottom: 20,
+    // marginBottom: -50,
   },
 });
 

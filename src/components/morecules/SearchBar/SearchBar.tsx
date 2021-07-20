@@ -1,6 +1,6 @@
 import React, { FC, PropsWithChildren, ReactElement } from 'react';
 import { StyleSheet, TextInput, TextInputProps, View } from 'react-native';
-import SearchIcon from '../../atoms/Icons/SearchIcon';
+import SearchIcon from '../../Icons/SearchIcon';
 
 const SearchBar: FC<PropsWithChildren<SearchBarProps>> = (
   props: PropsWithChildren<SearchBarProps>

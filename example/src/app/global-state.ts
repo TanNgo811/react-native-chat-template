@@ -1,6 +1,8 @@
-import type { GlobalUser } from '../models/GlobalUser';
-import type { ConversationMessage } from '../models/ConversationMessage';
-import type { AppUser } from '../models/AppUser';
+import type {
+  AppUser,
+  ConversationMessage,
+  GlobalUser,
+} from 'react-native-chat-bar';
 
 export class GlobalState {
   /**

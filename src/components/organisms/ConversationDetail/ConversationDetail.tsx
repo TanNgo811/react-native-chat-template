@@ -9,14 +9,14 @@ import {
   View,
 } from 'react-native';
 import MessageItem from '../../atoms/MessageItem/MessageItem';
-import ArrowDown from '../../atoms/Icons/ArrowDown';
+import ArrowDown from '../../Icons/ArrowDown';
 import type { GlobalUser } from '../../../models/GlobalUser';
 import type { ConversationMessage } from '../../../models/ConversationMessage';
 
 const ConversationDetail: FC<PropsWithChildren<ConversationDetailProps>> = (
   props: PropsWithChildren<ConversationDetailProps>
 ): ReactElement => {
-  const { listAnswer, currentGlobalUser } = props;
+  const { listAnswer, currentGlobalUser, onDeleteMessage } = props;
 
   const [ref, setRef] = React.useState<any>();
 
@@ -35,15 +35,16 @@ const ConversationDetail: FC<PropsWithChildren<ConversationDetailProps>> = (
         <MessageItem
           item={item}
           key={index}
-          response={item.globalUserId !== currentGlobalUser.id}
+          response={item?.globalUserId !== currentGlobalUser?.id}
           consecutive={
             index !== 0 &&
             listAnswer[index - 1].globalUserId === item.globalUserId
           }
+          onDelete={onDeleteMessage(item)}
         />
       );
     },
-    [listAnswer]
+    [currentGlobalUser?.id, listAnswer, onDeleteMessage]
   );
 
   return (
@@ -117,6 +118,8 @@ export interface ConversationDetailProps {
   listAnswer: ConversationMessage[];
 
   currentGlobalUser?: GlobalUser;
+
+  onDeleteMessage?: (item: ConversationMessage) => void;
 }
 
 ConversationDetail.defaultProps = {

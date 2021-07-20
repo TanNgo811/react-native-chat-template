@@ -2,12 +2,13 @@ import React, { FC, PropsWithChildren, ReactElement } from 'react';
 import { Image, TouchableOpacity, View, Text, StyleSheet } from 'react-native';
 import type { ConversationMessage } from '../../../models/ConversationMessage';
 import moment from 'moment';
-import ImageChat from '../ImageConversation/ImageConversation';
+import ImageChat from '../../morecules/ImageConversation/ImageConversation';
+import { ChoicesModal, signalRService } from 'react-native-chat-bar';
 
 const MessageViewComponent: FC<PropsWithChildren<MessageViewComponentProps>> = (
   props: PropsWithChildren<MessageViewComponentProps>
 ): ReactElement => {
-  const { consecutive, response, item } = props;
+  const { consecutive, response, item, onDelete } = props;
 
   const [time, setTime] = React.useState<boolean>(false);
 
@@ -95,10 +96,47 @@ const MessageViewComponent: FC<PropsWithChildren<MessageViewComponentProps>> = (
       <Text style={styles.value}>{messageContainer}</Text>
     );
 
+  const [isOptionsVisible, setOptionsVisible] = React.useState<boolean>(false);
+
+  const handleShowOptions = React.useCallback(() => {
+    setOptionsVisible(true);
+  }, []);
+
+  const handleCloseOptions = React.useCallback(() => {
+    setOptionsVisible(false);
+  }, []);
+
+  const handleDeleteConversationMessage = React.useCallback(async () => {
+    await signalRService.deleteMessage(
+      item?.conversationId,
+      item?.globalUserId,
+      ' ',
+      item.id
+    );
+    await onDelete(item);
+    handleCloseOptions();
+  }, [handleCloseOptions, item, onDelete]);
+
   return (
     <>
+      <ChoicesModal
+        choices={[
+          {
+            name: 'Xóa tin nhắn',
+            onPress: handleDeleteConversationMessage,
+          },
+        ]}
+        onBackdropPress={handleCloseOptions}
+        isVisible={isOptionsVisible}
+      />
+
       {response ? (
-        <TouchableOpacity activeOpacity={1} onPress={handleShowTime}>
+        <TouchableOpacity
+          activeOpacity={1}
+          onPress={handleShowTime}
+          delayLongPress={100}
+          onLongPress={handleShowOptions}
+        >
           <View style={styles.containerViewLeft}>
             {!consecutive ? (
               <Image
@@ -129,7 +167,6 @@ const MessageViewComponent: FC<PropsWithChildren<MessageViewComponentProps>> = (
           style={[styles.containerViewRight]}
         >
           <View style={styles.timeAndMessageRight}>
-            <View style={styles.viewTitleRight}>{renderMessageComponent}</View>
             {time && (
               <View style={[styles.timeContainer]}>
                 <Text style={styles.time}>
@@ -137,6 +174,7 @@ const MessageViewComponent: FC<PropsWithChildren<MessageViewComponentProps>> = (
                 </Text>
               </View>
             )}
+            <View style={styles.viewTitleRight}>{renderMessageComponent}</View>
           </View>
 
           {!consecutive ? (
@@ -163,6 +201,8 @@ const styles = StyleSheet.create({
 
   timeAndMessageLeft: {
     marginRight: '10%',
+    flexDirection: 'row',
+    alignItems: 'flex-end',
   },
 
   viewTitleLeft: {
@@ -182,6 +222,8 @@ const styles = StyleSheet.create({
 
   timeAndMessageRight: {
     marginLeft: '10%',
+    flexDirection: 'row',
+    alignItems: 'flex-end',
   },
 
   viewTitleRight: {
@@ -218,6 +260,7 @@ const styles = StyleSheet.create({
     lineHeight: 15,
     letterSpacing: -0.02,
     color: '#50555C',
+    marginHorizontal: 5,
   },
 
   imageComponent: {
@@ -269,6 +312,8 @@ export interface MessageViewComponentProps {
   response: boolean;
 
   item: ConversationMessage;
+
+  onDelete: (item: ConversationMessage) => {};
 }
 
 MessageViewComponent.defaultProps = {

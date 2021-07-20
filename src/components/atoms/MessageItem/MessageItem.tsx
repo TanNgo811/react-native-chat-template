@@ -3,7 +3,8 @@ import { Image, TouchableOpacity, View, Text, StyleSheet } from 'react-native';
 import type { ConversationMessage } from '../../../models/ConversationMessage';
 import moment from 'moment';
 import ImageChat from '../../morecules/ImageConversation/ImageConversation';
-import { ChoicesModal, signalRService } from 'react-native-chat-bar';
+import ChoicesModal from '../../organisms/ChoicesModal/ChoicesModal';
+import { signalRService } from '../../../services/SignalRService';
 
 const MessageViewComponent: FC<PropsWithChildren<MessageViewComponentProps>> = (
   props: PropsWithChildren<MessageViewComponentProps>

@@ -17,7 +17,6 @@ import {
 } from 'react-native';
 import CameraRoll from '@react-native-community/cameraroll';
 import useEffectOnce from 'react-use/lib/useEffectOnce';
-// import { showError, showWarning } from '../../../helper/Toast';
 import CloseIcon from '../../Icons/CloseIcon';
 import type { ImagePickerResponse } from '../../../models/ImageType';
 import SendImageButton from './SendImageButton';

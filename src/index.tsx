@@ -30,6 +30,8 @@ export { default as ChangeNameModal } from './components/organisms/ChangeNameMod
 
 export { default as ImageConversation } from './components/morecules/ImageConversation/ImageConversation';
 
+export { default as MessageItem } from './components/atoms/MessageItem/MessageItem';
+
 // ---------------------------Icon---------------------------
 
 // ---------------------------Model---------------------------

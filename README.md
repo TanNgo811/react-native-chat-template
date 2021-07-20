@@ -1,5 +1,9 @@
 # react-native-chat-bar
 
+## Just first commits
+
+## NOT RECOMMEND USING THIS!
+
 React Native Chat Bar UI
 
 ## Installation
@@ -10,13 +14,7 @@ npm install react-native-chat-bar
 
 ## Usage
 
-```js
-import ChatBar from "react-native-chat-bar";
 
-// ...
-
-const result = await ChatBar.multiply(3, 7);
-```
 
 ## Contributing
 
